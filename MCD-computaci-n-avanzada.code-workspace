@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "campo-generativo-guia"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "campo-generativo-guia",
+		"liveServer.settings.port": 5501
+	}
+}
