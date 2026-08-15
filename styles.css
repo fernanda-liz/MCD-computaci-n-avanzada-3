@@ -16,4 +16,5 @@ a:hover{border-bottom-color:#f0d36e}
 .gallery figure{margin:0}
 .gallery img{width:100%;height:auto;display:block;border-radius:8px;object-fit:cover}
 .gallery figcaption{margin-top:8px;font-size:13px;color:#a4a39e}
-@media (max-width:600px){.page{padding:48px 20px 96px}}
+.model{width:100%;height:420px;background:#151516;border-radius:8px;--poster-color:#151516}
+@media (max-width:600px){.page{padding:48px 20px 96px}.model{height:320px}}
