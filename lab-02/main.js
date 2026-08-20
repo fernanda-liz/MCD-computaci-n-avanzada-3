@@ -106,12 +106,13 @@ const materialModulo = new THREE.MeshStandardMaterial({
 // Si cambian estas reglas, cambia la familia de resultados.
 
 // Regla A:
-// posición → distancia al centro → onda → altura
+// posición → distancia al centro + ángulo → onda en espiral → altura
 function calcularAlturaModulo(x, z) {
   const distancia = Math.sqrt(x * x + z * z);
+  const angulo = Math.atan2(z, x);
 
   const onda =
-    Math.sin(distancia * parametros.frecuencia) *
+    Math.sin(distancia * parametros.frecuencia + angulo * 2) *
     parametros.amplitud;
 
   const ruido =
