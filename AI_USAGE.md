@@ -2,6 +2,14 @@
 
 Documenta de manera breve cuándo y para qué utilizaste asistentes de IA. El objetivo no es registrar cada mensaje, sino mantener trazabilidad sobre decisiones importantes.
 
+## Declaración de uso de IA
+
+Este repositorio fue desarrollado con apoyo de **Claude (Claude Code)**, un asistente de inteligencia artificial de Anthropic, como copiloto de programación durante el curso Computación Avanzada (MCD, UAI, 2026).
+
+El uso de IA en este proyecto es **exclusivamente con fines educativos**, dentro del marco explícitamente autorizado por el profesor del curso. La IA se utilizó para acelerar la lectura, localización y escritura de código a partir de instrucciones específicas dadas por la autora (prompts documentados abajo). Las decisiones de diseño — qué regla modificar, qué comportamiento explorar y por qué — fueron tomadas por la autora; la IA actuó como herramienta de implementación, no como reemplazo del criterio de diseño.
+
+Cada intervención relevante queda registrada a continuación con el prompt exacto utilizado, para mantener trazabilidad completa y transparente del proceso.
+
 ## Registro
 
 ### 2026-08-14 - LAB02: modificar una regla del Campo Generativo
@@ -35,3 +43,19 @@ Verifiqué en el navegador que no hubiera errores de consola y que el degradado 
 
 **Qué aprendí / qué error apareció:**
 Agregué el color como un parámetro nuevo del sistema, conectado a la distancia al centro (la misma variable que ya usa la altura), pero con su propia regla (gaussiana en vez de onda). No apareció ningún error; fue necesario recordar liberar memoria (`dispose()`) porque antes todos los módulos compartían un único material y ahora cada uno tiene el suyo.
+
+### 2026-08-14 - LAB02: fijar el visor 3D al hacer scroll en pantallas angostas
+
+**Herramienta / agente:** Claude (Claude Code)
+
+**Qué pedí (prompt usado):**
+"Desde los parámetros, ¿se puede agregar una barra de scroll para que cuando bajo no pierda la visibilidad del campo generativo, pero que este scroll propio de los parámetros no baje por completo la página hasta que haga scroll con el scroll general del navegador?"
+
+**Qué cambió en el proyecto:**
+En `lab-02/style.css`, dentro de la media query `@media (max-width:900px)` (la que aplica en pantallas angostas/móvil), se cambió de un layout de una sola columna con scroll de página completa, a un layout de dos filas: el visor 3D (`.viewport-shell`) queda fijo en el 45% superior de la pantalla (`position: sticky; height: 45vh`), y el panel de parámetros (`.controls-panel`) ocupa el resto con su propio scroll interno (`overflow-y: auto`). Se cambió `body { overflow: auto }` por `body { overflow: hidden }` para que la página en sí ya no se pueda desplazar. En pantallas anchas (desktop) no se modificó nada, porque ese comportamiento ya existía.
+
+**Qué revisé o corregí manualmente:**
+Probé en un tamaño de ventana angosto (420×800) que: 1) la página completa no se moviera (`window.scrollY` se mantiene en 0), 2) el panel de parámetros sí se desplazara internamente al hacer scroll sobre él, y 3) el campo generativo permaneciera visible en todo momento. Tuve que reiniciar el servidor local porque el navegador estaba sirviendo una versión en caché del CSS y el cambio no se reflejaba.
+
+**Qué aprendí / qué error apareció:**
+No es un cambio a una regla generativa, sino a la interfaz: separé el scroll de la página del scroll del panel de parámetros usando `overflow-y: auto` en el panel y `overflow: hidden` en el body, con el visor en `position: sticky`. El único inconveniente fue de caché del navegador durante las pruebas, no del código en sí.
