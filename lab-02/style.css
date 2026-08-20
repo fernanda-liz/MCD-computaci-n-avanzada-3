@@ -9,6 +9,7 @@ body{overflow:hidden}
 .viewport-shell{position:relative;min-width:0;background:radial-gradient(circle at 40% 25%,rgba(255,255,255,.035),transparent 28%),var(--bg)}
 .project-header{position:absolute;z-index:10;top:32px;left:40px;max-width:520px;pointer-events:none}
 .eyebrow{margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--text-faint)}
+.autor{margin:0 0 8px;font-size:10px;font-weight:400;letter-spacing:.18em;color:var(--text-faint)}
 h1,h2,h3,p{margin-top:0}
 h1{margin-bottom:8px;font-weight:300;font-size:clamp(32px,4vw,54px);letter-spacing:-.035em}
 .subtitle{max-width:470px;margin:0;color:var(--text-soft);font-size:16px;line-height:1.5}
