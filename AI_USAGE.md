@@ -75,3 +75,19 @@ Detecté que los sliders nuevos no actualizaban nada al moverlos: el HTML los te
 
 **Qué aprendí / qué error apareció:**
 Agregar un slider al HTML no alcanza: hay que registrarlo también en `controles` y `valoresVisibles` en `main.js`, porque esos objetos son los que conectan cada input con su parámetro. Fue un error real durante el proceso, no solo un ejemplo hipotético.
+
+### 2026-08-14 - LAB02: reemplazo "Calidez" por "Intensidad" (radio del degradado)
+
+**Herramienta / agente:** Claude (Claude Code)
+
+**Qué pedí (prompt usado):**
+"En calidez quiero que lo reemplaces por intensidad entre dorado y azul, donde pueda modificar si siento solo un poco naranjo y el resto azul, o mucho dorado al centro y poco azul a las afueras."
+
+**Qué cambió en el proyecto:**
+Se eliminó el slider `calidez` (que cambiaba el tono del centro entre dorado y rojo) y se reemplazó por `intensidad` (rango 0.2 a 3, valor inicial 1), que en vez de cambiar el color, escala el radio `sigma` de la caída gaussiana ya existente: `sigmaColor = base * parametros.intensidad`. Con `intensidad` baja, el dorado queda concentrado solo en el centro y el azul domina el resto; con `intensidad` alta, el dorado se extiende mucho y el azul casi no se nota en los bordes. Se revirtieron `colorCentroFrio`/`colorCentroCalido` a un único `colorCentro` dorado (ya no hay mezcla de tonos), y `calcularColorModulo` volvió a su firma original sin el color dinámico.
+
+**Qué revisé o corregí manualmente:**
+Probé ambos extremos en el navegador: `intensidad = 0.2` (dorado concentrado, azul dominante) e `intensidad = 3` (dorado dominante, azul casi ausente en las esquinas), confirmando visualmente con capturas que el comportamiento coincide con lo pedido.
+
+**Qué aprendí / qué error apareció:**
+Entendí que lo que la usuaria pedía no era cambiar el color en sí (tono), sino la proporción del degradado — es decir, ajustar `sigma` (el radio de influencia de la caída gaussiana) en vez de mezclar dos colores de centro. No apareció ningún error; fue un cambio limpio sobre la Regla C ya existente.
