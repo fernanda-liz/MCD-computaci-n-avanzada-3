@@ -28,7 +28,12 @@ button{border:1px solid var(--accent);background:var(--accent);color:#121212;pad
 button.secondary{background:transparent;color:var(--text);border-color:var(--line)}
 .panel-footer{padding-top:4px;color:var(--text-soft);font-size:12px;line-height:1.55}
 .panel-footer strong{color:var(--text);font-weight:500}
-@media (max-width:900px){body{overflow:auto}.app-shell{grid-template-columns:1fr}.viewport-shell{min-height:70vh}.controls-panel{min-height:auto;border-left:0;border-top:1px solid var(--line)}}
+@media (max-width:900px){
+  body{overflow:hidden}
+  .app-shell{grid-template-columns:1fr;grid-template-rows:45vh 1fr;height:100vh}
+  .viewport-shell{position:sticky;top:0;min-height:0;height:45vh}
+  .controls-panel{min-height:0;height:calc(100vh - 45vh);border-left:0;border-top:1px solid var(--line);overflow-y:auto}
+}
 
 
 @media (max-height: 820px) and (min-width: 901px) {
