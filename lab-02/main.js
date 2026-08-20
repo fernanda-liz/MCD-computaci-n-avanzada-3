@@ -15,7 +15,6 @@ const valoresIniciales = {
   espiral: 2.0,
   aleatoriedad: 0.0,
   semilla: 42,
-  intensidad: 1.0,
 };
 
 const parametros = { ...valoresIniciales };
@@ -50,6 +49,23 @@ viewport.appendChild(renderer.domElement);
 const controlesOrbita = new OrbitControls(camara, renderer.domElement);
 controlesOrbita.enableDamping = true;
 controlesOrbita.target.set(0, 1.2, 0);
+
+// Cursor → punto sobre el plano del campo (para la Regla D, más abajo).
+const raycaster = new THREE.Raycaster();
+const cursorNDC = new THREE.Vector2(Infinity, Infinity);
+const planoCampo = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const puntoCursor = new THREE.Vector3();
+let cursorActivo = false;
+
+viewport.addEventListener("pointermove", (evento) => {
+  const rect = viewport.getBoundingClientRect();
+  cursorNDC.x = ((evento.clientX - rect.left) / rect.width) * 2 - 1;
+  cursorNDC.y = -(((evento.clientY - rect.top) / rect.height) * 2 - 1);
+});
+
+viewport.addEventListener("pointerleave", () => {
+  cursorNDC.set(Infinity, Infinity);
+});
 
 // Iluminación general.
 const luzHemisferica = new THREE.HemisphereLight(0xf3efe5, 0x202229, 1.7);
@@ -136,12 +152,32 @@ function calcularRotacionModulo(x, z) {
 }
 
 // Regla C:
-// distancia al centro → caída gaussiana → color (dorado en el centro, azul en el borde).
-// La intensidad agranda o achica el radio dorado: valores altos = más dorado y menos azul,
-// valores bajos = dorado concentrado solo en el centro y azul dominando el resto.
-function calcularColorModulo(distancia, sigma) {
-  const factorCentro = Math.exp(-(distancia * distancia) / (2 * sigma * sigma));
-  return colorCentro.clone().lerp(colorBorde, 1 - factorCentro);
+// altura del módulo → color automático (torres bajas = azul, torres altas = dorado).
+// No depende de un slider: se recalcula solo, según qué tan alta salió cada torre.
+function calcularColorModulo(altura, alturaMinima, alturaMaxima) {
+  const factorAltura = THREE.MathUtils.clamp(
+    (altura - alturaMinima) / (alturaMaxima - alturaMinima || 1),
+    0,
+    1
+  );
+  return colorBorde.clone().lerp(colorCentro, factorAltura);
+}
+
+// Regla D:
+// distancia al cursor → retroceso. Las torres cercanas al cursor bajan,
+// como si se "alejaran" de él; vuelven a su altura de diseño al soltar el mouse.
+const radioInteraccion = 3.5;
+const retrocesoMaximo = 0.85; // 0 = no retrocede, 1 = se hunde por completo
+
+function calcularAlturaConCursor(alturaBase, x, z) {
+  if (!cursorActivo) return alturaBase;
+
+  const dx = x - puntoCursor.x;
+  const dz = z - puntoCursor.z;
+  const distanciaCursor = Math.sqrt(dx * dx + dz * dz);
+
+  const cercania = Math.max(0, 1 - distanciaCursor / radioInteraccion);
+  return alturaBase * (1 - cercania * retrocesoMaximo);
 }
 
 // ======================================================
@@ -153,17 +189,19 @@ function generarCampo() {
 
   const ancho = (parametros.columnas - 1) * parametros.separacion;
   const profundidad = (parametros.filas - 1) * parametros.separacion;
-  const sigmaColor = (Math.max(ancho, profundidad) / 3 || 1) * parametros.intensidad;
+
+  // Rango esperado de alturas, usado para normalizar el color (no para dibujar).
+  const alturaMinima = 0.25;
+  const alturaMaxima = 1.2 + parametros.amplitud + parametros.aleatoriedad;
 
   for (let columna = 0; columna < parametros.columnas; columna++) {
     for (let fila = 0; fila < parametros.filas; fila++) {
       const x = columna * parametros.separacion - ancho / 2;
       const z = fila * parametros.separacion - profundidad / 2;
-      const distancia = Math.sqrt(x * x + z * z);
 
       const altura = calcularAlturaModulo(x, z);
       const rotacion = calcularRotacionModulo(x, z);
-      const color = calcularColorModulo(distancia, sigmaColor);
+      const color = calcularColorModulo(altura, alturaMinima, alturaMaxima);
 
       const materialInstancia = materialModulo.clone();
       materialInstancia.color.copy(color);
@@ -180,6 +218,11 @@ function generarCampo() {
       modulo.rotation.y = rotacion;
       modulo.castShadow = true;
       modulo.receiveShadow = true;
+
+      // Guardamos la altura "de diseño" para poder animar el retroceso
+      // por cursor sin perder el valor original al que debe volver.
+      modulo.userData.alturaBase = altura;
+      modulo.userData.alturaActual = altura;
 
       grupoCampo.add(modulo);
     }
@@ -227,7 +270,6 @@ const controles = {
   espiral: document.querySelector("#espiral"),
   aleatoriedad: document.querySelector("#aleatoriedad"),
   semilla: document.querySelector("#semilla"),
-  intensidad: document.querySelector("#intensidad"),
 };
 
 const valoresVisibles = {
@@ -240,7 +282,6 @@ const valoresVisibles = {
   espiral: document.querySelector("#espiral-valor"),
   aleatoriedad: document.querySelector("#aleatoriedad-valor"),
   semilla: document.querySelector("#semilla-valor"),
-  intensidad: document.querySelector("#intensidad-valor"),
 };
 
 function actualizarParametro(nombre, valor) {
@@ -295,8 +336,33 @@ document.querySelector("#restablecer").addEventListener("click", () => {
 function animar() {
   requestAnimationFrame(animar);
 
+  actualizarInteraccionCursor();
   controlesOrbita.update();
   renderer.render(escena, camara);
+}
+
+function actualizarInteraccionCursor() {
+  raycaster.setFromCamera(cursorNDC, camara);
+  cursorActivo = raycaster.ray.intersectPlane(planoCampo, puntoCursor) !== null;
+
+  grupoCampo.children.forEach((modulo) => {
+    const objetivo = calcularAlturaConCursor(
+      modulo.userData.alturaBase,
+      modulo.position.x,
+      modulo.position.z
+    );
+
+    // Suavizamos el cambio (en vez de saltar) para que el retroceso se sienta como movimiento.
+    modulo.userData.alturaActual = THREE.MathUtils.lerp(
+      modulo.userData.alturaActual,
+      objetivo,
+      0.15
+    );
+
+    const alturaActual = modulo.userData.alturaActual;
+    modulo.scale.y = alturaActual;
+    modulo.position.y = alturaActual / 2;
+  });
 }
 
 function ajustarVentana() {

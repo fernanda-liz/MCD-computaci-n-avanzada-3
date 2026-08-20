@@ -91,3 +91,20 @@ Probé ambos extremos en el navegador: `intensidad = 0.2` (dorado concentrado, a
 
 **Qué aprendí / qué error apareció:**
 Entendí que lo que la usuaria pedía no era cambiar el color en sí (tono), sino la proporción del degradado — es decir, ajustar `sigma` (el radio de influencia de la caída gaussiana) en vez de mezclar dos colores de centro. No apareció ningún error; fue un cambio limpio sobre la Regla C ya existente.
+
+### 2026-08-14 - LAB02: exploración — color automático por altura + interacción con el cursor
+
+**Herramienta / agente:** Claude (Claude Code)
+
+**Qué pedí (prompt usado):**
+"En vez del slider de color (intensidad) que sea de manera automática pero ya no como degradado gaussiano sino que mientras las torres son más altas, más dorado debe verse. Además como extra, quisiera que cuando acerque el cursor, las torres vayan bajando como 'alejándose', esto con el fin de que se vea interactivo."
+
+**Qué cambió en el proyecto:**
+1) *Color automático:* se quitó el slider `Intensidad` (y sus referencias en `valoresIniciales`, `controles`, `valoresVisibles`, HTML). La Regla C (`calcularColorModulo`) ya no usa distancia+gaussiana, sino la altura del propio módulo: se calcula un rango esperado de alturas (`alturaMinima`/`alturaMaxima`, derivado de `amplitud` y `aleatoriedad`) y se normaliza la altura de cada torre dentro de ese rango para mezclar entre azul (torres bajas) y dorado (torres altas).
+2) *Interacción con cursor (Regla D nueva):* se agregó un `THREE.Raycaster` que proyecta la posición del mouse sobre un plano invisible en `y=0` para obtener el punto 3D bajo el cursor. En cada frame (`actualizarInteraccionCursor`), cada torre calcula su distancia a ese punto; las que están dentro de un radio de interacción (`radioInteraccion = 3.5`) reducen su altura hasta en un 85% (`retrocesoMaximo`), con una interpolación suave (`lerp` con factor 0.15 por frame) para que el movimiento se sienta animado y no un salto brusco. Al alejar el cursor, las torres vuelven solas a su `alturaBase` original.
+
+**Qué revisé o corregí manualmente:**
+La verificación visual automatizada fue difícil porque el simulador de mouse del entorno de pruebas no siempre generaba eventos `pointermove` reales y consistentes sobre el canvas. Para no depender de eso, expuse temporalmente el estado interno (`cursorActivo`, altura base vs. altura actual de la torre más cercana al cursor) y confirmé numéricamente que, tras forzar una actualización con un punto de cursor válido, la altura de la torre más cercana bajó de 3.53 a 3.13 en un solo paso — es decir, el retroceso sí ocurre y converge hacia el objetivo esperado. Después eliminé todo el código de depuración temporal antes de subir la versión final.
+
+**Qué aprendí / qué error apareció:**
+No hubo error en la lógica en sí, pero sí aprendí a diferenciar un problema del código de un problema del entorno de pruebas: cuando la verificación visual automatizada no es confiable (por ejemplo, mouse simulado), conviene verificar con datos concretos (números antes/después) en vez de insistir con capturas de pantalla que pueden no reflejar el estado real a tiempo.
