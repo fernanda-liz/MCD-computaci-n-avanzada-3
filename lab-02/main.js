@@ -99,6 +99,10 @@ const materialModulo = new THREE.MeshStandardMaterial({
   metalness: 0.03,
 });
 
+// Colores del degradado centro → borde.
+const colorCentro = new THREE.Color(0xd4af37); // dorado
+const colorBorde = new THREE.Color(0x2b4c7e); // azul
+
 // ======================================================
 // 04 — REGLAS GENERATIVAS
 // ======================================================
@@ -129,6 +133,13 @@ function calcularRotacionModulo(x, z) {
   return direccion * parametros.rotacion;
 }
 
+// Regla C:
+// distancia al centro → caída gaussiana → color (dorado en el centro, azul en el borde).
+function calcularColorModulo(distancia, sigma) {
+  const factorCentro = Math.exp(-(distancia * distancia) / (2 * sigma * sigma));
+  return colorCentro.clone().lerp(colorBorde, 1 - factorCentro);
+}
+
 // ======================================================
 // 05 — GENERAR CAMPO
 // ======================================================
@@ -138,16 +149,22 @@ function generarCampo() {
 
   const ancho = (parametros.columnas - 1) * parametros.separacion;
   const profundidad = (parametros.filas - 1) * parametros.separacion;
+  const sigmaColor = Math.max(ancho, profundidad) / 3 || 1;
 
   for (let columna = 0; columna < parametros.columnas; columna++) {
     for (let fila = 0; fila < parametros.filas; fila++) {
       const x = columna * parametros.separacion - ancho / 2;
       const z = fila * parametros.separacion - profundidad / 2;
+      const distancia = Math.sqrt(x * x + z * z);
 
       const altura = calcularAlturaModulo(x, z);
       const rotacion = calcularRotacionModulo(x, z);
+      const color = calcularColorModulo(distancia, sigmaColor);
 
-      const modulo = new THREE.Mesh(geometriaModulo, materialModulo);
+      const materialInstancia = materialModulo.clone();
+      materialInstancia.color.copy(color);
+
+      const modulo = new THREE.Mesh(geometriaModulo, materialInstancia);
 
       // Escalamos solo en Y para modificar la altura.
       modulo.scale.y = altura;
@@ -167,7 +184,9 @@ function generarCampo() {
 
 function limpiarCampo() {
   while (grupoCampo.children.length > 0) {
-    grupoCampo.remove(grupoCampo.children[0]);
+    const modulo = grupoCampo.children[0];
+    modulo.material.dispose();
+    grupoCampo.remove(modulo);
   }
 }
 
