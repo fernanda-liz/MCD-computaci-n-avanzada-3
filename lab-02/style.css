@@ -7,7 +7,9 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-f
 body{overflow:hidden}
 .app-shell{display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:100vh}
 .viewport-shell{position:relative;min-width:0;background:radial-gradient(circle at 40% 25%,rgba(255,255,255,.035),transparent 28%),var(--bg)}
-.project-header{position:absolute;z-index:10;top:32px;left:40px;max-width:520px;pointer-events:none}
+.project-header{position:absolute;z-index:10;top:32px;left:40px;right:40px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:24px;pointer-events:none}
+.project-header>div:first-child{max-width:520px}
+.cambios-nota{max-width:380px;text-align:right}
 .eyebrow{margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--text-faint)}
 .autor{margin:0 0 8px;font-size:10px;font-weight:400;letter-spacing:.18em;color:var(--text-faint)}
 h1,h2,h3,p{margin-top:0}
