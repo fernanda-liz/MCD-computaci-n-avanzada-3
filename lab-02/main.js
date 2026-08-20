@@ -12,8 +12,10 @@ const valoresIniciales = {
   amplitud: 3.0,
   frecuencia: 0.4,
   rotacion: 0.3,
+  espiral: 2.0,
   aleatoriedad: 0.0,
   semilla: 42,
+  calidez: 0.0,
 };
 
 const parametros = { ...valoresIniciales };
@@ -100,7 +102,8 @@ const materialModulo = new THREE.MeshStandardMaterial({
 });
 
 // Colores del degradado centro → borde.
-const colorCentro = new THREE.Color(0xd4af37); // dorado
+const colorCentroFrio = new THREE.Color(0xd4af37); // dorado (calidez = 0)
+const colorCentroCalido = new THREE.Color(0xc4341f); // rojo (calidez = 1)
 const colorBorde = new THREE.Color(0x2b4c7e); // azul
 
 // ======================================================
@@ -116,7 +119,7 @@ function calcularAlturaModulo(x, z) {
   const angulo = Math.atan2(z, x);
 
   const onda =
-    Math.sin(distancia * parametros.frecuencia + angulo * 2) *
+    Math.sin(distancia * parametros.frecuencia + angulo * parametros.espiral) *
     parametros.amplitud;
 
   const ruido =
@@ -134,10 +137,11 @@ function calcularRotacionModulo(x, z) {
 }
 
 // Regla C:
-// distancia al centro → caída gaussiana → color (dorado en el centro, azul en el borde).
-function calcularColorModulo(distancia, sigma) {
+// distancia al centro → caída gaussiana → color (dorado/rojo en el centro, azul en el borde).
+// La calidez desliza el color del centro entre dorado (0) y rojo (1).
+function calcularColorModulo(distancia, sigma, colorCentroActual) {
   const factorCentro = Math.exp(-(distancia * distancia) / (2 * sigma * sigma));
-  return colorCentro.clone().lerp(colorBorde, 1 - factorCentro);
+  return colorCentroActual.clone().lerp(colorBorde, 1 - factorCentro);
 }
 
 // ======================================================
@@ -150,6 +154,7 @@ function generarCampo() {
   const ancho = (parametros.columnas - 1) * parametros.separacion;
   const profundidad = (parametros.filas - 1) * parametros.separacion;
   const sigmaColor = Math.max(ancho, profundidad) / 3 || 1;
+  const colorCentroActual = colorCentroFrio.clone().lerp(colorCentroCalido, parametros.calidez);
 
   for (let columna = 0; columna < parametros.columnas; columna++) {
     for (let fila = 0; fila < parametros.filas; fila++) {
@@ -159,7 +164,7 @@ function generarCampo() {
 
       const altura = calcularAlturaModulo(x, z);
       const rotacion = calcularRotacionModulo(x, z);
-      const color = calcularColorModulo(distancia, sigmaColor);
+      const color = calcularColorModulo(distancia, sigmaColor, colorCentroActual);
 
       const materialInstancia = materialModulo.clone();
       materialInstancia.color.copy(color);
@@ -220,8 +225,10 @@ const controles = {
   amplitud: document.querySelector("#amplitud"),
   frecuencia: document.querySelector("#frecuencia"),
   rotacion: document.querySelector("#rotacion"),
+  espiral: document.querySelector("#espiral"),
   aleatoriedad: document.querySelector("#aleatoriedad"),
   semilla: document.querySelector("#semilla"),
+  calidez: document.querySelector("#calidez"),
 };
 
 const valoresVisibles = {
@@ -231,8 +238,10 @@ const valoresVisibles = {
   amplitud: document.querySelector("#amplitud-valor"),
   frecuencia: document.querySelector("#frecuencia-valor"),
   rotacion: document.querySelector("#rotacion-valor"),
+  espiral: document.querySelector("#espiral-valor"),
   aleatoriedad: document.querySelector("#aleatoriedad-valor"),
   semilla: document.querySelector("#semilla-valor"),
+  calidez: document.querySelector("#calidez-valor"),
 };
 
 function actualizarParametro(nombre, valor) {

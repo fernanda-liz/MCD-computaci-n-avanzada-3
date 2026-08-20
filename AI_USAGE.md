@@ -59,3 +59,19 @@ Probé en un tamaño de ventana angosto (420×800) que: 1) la página completa n
 
 **Qué aprendí / qué error apareció:**
 No es un cambio a una regla generativa, sino a la interfaz: separé el scroll de la página del scroll del panel de parámetros usando `overflow-y: auto` en el panel y `overflow: hidden` en el body, con el visor en `position: sticky`. El único inconveniente fue de caché del navegador durante las pruebas, no del código en sí.
+
+### 2026-08-14 - LAB02: parámetros nuevos "Espiral" y "Calidez"
+
+**Herramienta / agente:** Claude (Claude Code)
+
+**Qué pedí (prompt usado):**
+"Quiero extender los parámetros del sistema dentro de lo permitido por el profesor: 1) que la torsión del espiral (hoy fija en `angulo * 2` dentro de `calcularAlturaModulo`) sea ajustable con un slider nuevo llamado Espiral, que pueda achicarse hasta 0 (anillos normales) o extenderse más. 2) Agrega un slider nuevo llamado Calidez que deslice el color del centro entre dorado y rojo, manteniendo el azul del borde igual. Sigue el mismo patrón que ya usan los demás sliders (HTML + objetos `controles` y `valoresVisibles` en main.js)."
+
+**Qué cambió en el proyecto:**
+En `valoresIniciales` se agregaron `espiral: 2.0` y `calidez: 0.0`. En `calcularAlturaModulo`, el multiplicador fijo `angulo * 2` se reemplazó por `angulo * parametros.espiral`. Se agregó `colorCentroCalido` (rojo) junto al `colorCentroFrio` (dorado, antes `colorCentro`), y en `generarCampo()` se calcula `colorCentroActual` mezclando ambos según `parametros.calidez` antes de pasarlo a `calcularColorModulo`. En `index.html` se agregaron los sliders `#espiral` (rango -6 a 6) y `#calidez` (rango 0 a 1), y se registraron en los objetos `controles` y `valoresVisibles` de `main.js` — el primer intento no funcionó porque olvidé agregarlos a esos dos objetos, aunque el HTML ya los tenía.
+
+**Qué revisé o corregí manualmente:**
+Detecté que los sliders nuevos no actualizaban nada al moverlos: el HTML los tenía pero `main.js` no los conectaba porque no estaban en los objetos `controles`/`valoresVisibles`. Los agregué y verifiqué con eventos simulados que `Espiral` en 0 dejara el patrón como anillos concéntricos normales, y que `Calidez` en 1 mostrara rojo en el centro en vez de dorado, con el azul del borde intacto.
+
+**Qué aprendí / qué error apareció:**
+Agregar un slider al HTML no alcanza: hay que registrarlo también en `controles` y `valoresVisibles` en `main.js`, porque esos objetos son los que conectan cada input con su parámetro. Fue un error real durante el proceso, no solo un ejemplo hipotético.
