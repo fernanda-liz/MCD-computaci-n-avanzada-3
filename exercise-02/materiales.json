@@ -1,0 +1,118 @@
+{
+  "ejes": [
+    { "id": "tensil", "label": "Resistencia tensil", "unidad": "MPa" },
+    { "id": "elongacion", "label": "Elongación a rotura", "unidad": "%" },
+    { "id": "modulo", "label": "Módulo (rigidez)", "unidad": "MPa" },
+    { "id": "flexural", "label": "Resistencia flexural", "unidad": "MPa" },
+    { "id": "calor", "label": "Resistencia al calor", "unidad": "°C" },
+    { "id": "tenacidad", "label": "Tenacidad (impacto)", "unidad": "kJ/m²" },
+    { "id": "humedad", "label": "Resistencia a la humedad", "unidad": "% absorción", "invertido": true }
+  ],
+  "materiales": [
+    {
+      "id": "ultimaker-abs",
+      "nombre": "Ultimaker ABS",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 33.9, "elongacion": 4.8, "modulo": 1681.5, "flexural": 70.5, "calor": 97, "tenacidad": 10.5, "humedad": null },
+      "fuente": "Ficha técnica Ultimaker ABS (librería propia). Calor = temperatura de transición vítrea (no se publica HDT para la muestra 3D). Tenacidad = Izod con entalla, 3D printing."
+    },
+    {
+      "id": "ultimaker-nylon",
+      "nombre": "Ultimaker Nylon",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 34.4, "elongacion": 210, "modulo": 579, "flexural": 24, "calor": 50, "tenacidad": 34.4, "humedad": null },
+      "fuente": "Ficha técnica Ultimaker Nylon (librería propia). Calor = temperatura de transición vítrea. Tenacidad = Izod con entalla."
+    },
+    {
+      "id": "ultimaker-pla",
+      "nombre": "Ultimaker PLA",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 36.28, "elongacion": 2.84, "modulo": 2852, "flexural": 65.7, "calor": null, "tenacidad": null, "humedad": null },
+      "fuente": "Ficha técnica Ultimaker PLA (librería propia). No se encontraron valores de calor/tenacidad/humedad publicados para esta variante."
+    },
+    {
+      "id": "ultimaker-tough-pla",
+      "nombre": "Ultimaker Tough PLA",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 27.5, "elongacion": 9.4, "modulo": 2797, "flexural": 91.6, "calor": 58.3, "tenacidad": 8.9, "humedad": null },
+      "fuente": "UM220509-Tough-PLA-TDS-RB-v2.10 (XY, valor de rotura). Calor = HDT a 0.455 MPa. Tenacidad = Charpy con entalla."
+    },
+    {
+      "id": "ultimaker-pva",
+      "nombre": "Ultimaker PVA (soporte)",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 78, "elongacion": 9.9, "modulo": 3860, "flexural": null, "calor": 60.2, "tenacidad": 1.6, "humedad": null },
+      "fuente": "Ficha técnica Ultimaker PVA (librería propia). Calor = temperatura de transición vítrea. Tenacidad = Charpy sin entalla (no comparable 1:1 con valores con entalla)."
+    },
+    {
+      "id": "ultimaker-tpu95a",
+      "nombre": "Ultimaker TPU 95A",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 23.7, "elongacion": 560, "modulo": null, "flexural": null, "calor": 74, "tenacidad": 19.1, "humedad": 0.18 },
+      "fuente": "Ficha técnica Ultimaker TPU 95A (librería propia). Calor = HDT a 0.455 MPa. Tenacidad = Izod con entalla. Humedad = absorción máxima, ASTM D570 (24h)."
+    },
+    {
+      "id": "ultimaker-petcf",
+      "nombre": "UltiMaker PET CF",
+      "fabricante": "Ultimaker",
+      "valores": { "tensil": 72.3, "elongacion": 5.9, "modulo": 8568, "flexural": 122.3, "calor": 205, "tenacidad": 5.6, "humedad": null },
+      "fuente": "Ficha técnica UltiMaker PET CF (librería propia, orientación XY). Calor = HDT a 0.45 MPa. Tenacidad = Izod con entalla."
+    },
+    {
+      "id": "basf-abs-fusion",
+      "nombre": "BASF Ultrafuse ABS Fusion+",
+      "fabricante": "BASF Forward AM",
+      "valores": { "tensil": 29.5, "elongacion": 10.9, "modulo": null, "flexural": null, "calor": null, "tenacidad": null, "humedad": null },
+      "fuente": "Búsqueda oficial forward-am.com (orientación XY). Sin datos de calor/tenacidad/humedad localizados."
+    },
+    {
+      "id": "basf-paht-cf15",
+      "nombre": "BASF Ultrafuse PAHT CF15",
+      "fabricante": "BASF Forward AM",
+      "valores": { "tensil": 103.2, "elongacion": 1.8, "modulo": 8386, "flexural": 160.7, "calor": 145, "tenacidad": 4.9, "humedad": null },
+      "fuente": "Ficha técnica Ultrafuse PAHT CF15 (librería propia, orientación XY). Calor = HDT a 0.45 MPa. Tenacidad = Izod con entalla, XY. Humedad: el fabricante solo declara cualitativamente 'low moisture absorption', sin cifra."
+    },
+    {
+      "id": "basf-pp-gf30",
+      "nombre": "BASF Ultrafuse PP GF30",
+      "fabricante": "BASF Forward AM",
+      "valores": { "tensil": 41.7, "elongacion": 4.4, "modulo": null, "flexural": null, "calor": 127, "tenacidad": 2.4, "humedad": null },
+      "fuente": "Ficha técnica Ultrafuse PP GF30 (librería propia). Calor = HDT a 0.45 MPa. Tenacidad = Izod con entalla, XY. Humedad: 'low moisture uptake' declarado sin cifra."
+    },
+    {
+      "id": "basf-pla-pro1",
+      "nombre": "BASF Ultrafuse PRO1 Tough PLA",
+      "fabricante": "BASF Forward AM",
+      "valores": { "tensil": 48.0, "elongacion": 21.9, "modulo": 3166, "flexural": 92.4, "calor": 63, "tenacidad": 20.4, "humedad": null },
+      "fuente": "Ficha técnica Ultrafuse PLA PRO1 (librería propia, orientación XY). Calor = temperatura de transición vítrea. Tenacidad = Charpy sin entalla."
+    },
+    {
+      "id": "kimya-peba-s",
+      "nombre": "Kimya PEBA-S",
+      "fabricante": "Kimya",
+      "valores": { "tensil": 32.8, "elongacion": 550, "modulo": 63, "flexural": null, "calor": null, "tenacidad": null, "humedad": null },
+      "fuente": "Ficha técnica Kimya PEBA-S (librería propia). Sin datos de calor/tenacidad/humedad localizados."
+    },
+    {
+      "id": "dsm-arnitel-id2060ht",
+      "nombre": "DSM Arnitel ID2060 HT",
+      "fabricante": "DSM",
+      "valores": { "tensil": 21, "elongacion": 245, "modulo": 230, "flexural": null, "calor": 175, "tenacidad": null, "humedad": null },
+      "fuente": "Ficha técnica DSM Arnitel ID2060 HT. Calor = resistencia térmica prolongada declarada por el fabricante (175 °C / 1000h)."
+    },
+    {
+      "id": "igus-iglidur-i150",
+      "nombre": "igus iglidur I150-PF",
+      "fabricante": "igus",
+      "valores": { "tensil": 39, "elongacion": null, "modulo": 1390, "flexural": 67, "calor": 65, "tenacidad": null, "humedad": 0.3 },
+      "fuente": "3DP_DATA_I150-BL-PF-0175-0750_EN.pdf (ficha oficial igus). Calor = temperatura máxima de aplicación a largo plazo. Humedad = absorción máxima declarada."
+    },
+    {
+      "id": "igus-iglidur-i190",
+      "nombre": "igus iglidur I190-PF",
+      "fabricante": "igus",
+      "valores": { "tensil": null, "elongacion": null, "modulo": null, "flexural": 73.0, "calor": null, "tenacidad": null, "humedad": null },
+      "fuente": "Informe de ensayo OMPG/DAkkS 20450-0579_01, DIN EN ISO 178 (n=5, media ± 7.8 MPa). Solo se ensayó flexión; sin datos de calor/tenacidad/humedad."
+    }
+  ]
+}

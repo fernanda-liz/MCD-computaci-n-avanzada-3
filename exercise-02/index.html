@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ejercicio 02 · Radar de materiales FDM</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="viewport-shell">
+      <div class="project-header">
+        <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI</p>
+        <p class="autor">Fernanda Liz Cabezas G.</p>
+        <h1>Radar de materiales FDM</h1>
+        <p class="subtitle">Comparo hasta 4 filamentos de impresión 3D que uso en mi trabajo, con datos reales de sus fichas técnicas: resistencia tensil, elongación a rotura, módulo (rigidez) y resistencia flexural.</p>
+      </div>
+      <svg id="radar" viewBox="0 0 600 600"></svg>
+      <div class="hint">Selecciona materiales en el panel para superponerlos · pasa el cursor sobre un vértice para ver el valor</div>
+    </div>
+
+    <aside class="controls-panel">
+      <div class="panel-header">
+        <h2>Materiales</h2>
+        <p class="panel-note">Selecciona hasta 4 para comparar.</p>
+      </div>
+      <div id="lista-materiales" class="material-list"></div>
+      <div class="panel-footer">
+        <strong>Fuente:</strong> fichas técnicas oficiales de fabricante (Ultimaker, BASF Forward AM, igus, Kimya, DSM) e informe de ensayo de laboratorio acreditado (igus i190).
+        <br><br>
+        Los valores faltantes (—) no están publicados por el fabricante para ese material; no se inventan ni se estiman.
+      </div>
+    </aside>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
