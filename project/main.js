@@ -95,9 +95,9 @@ const ICONO_RUTA = {
 
 function iconoFlag(ok) {
   const marca = ok
-    ? `<path d="M6.6 5.8l1 1 1.9-2" fill="none" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>`
-    : `<path d="M6.3 4.6l2 2m0-2-2 2" fill="none" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/>`;
-  return `<svg viewBox="0 0 16 16" class="icono-bandera ${ok ? "bandera-ok" : "bandera-fallo"}" aria-hidden="true"><path d="M4 2.5v11" stroke-width="1.4"/><path d="M4 2.5h6.5l-1.6 2.3 1.6 2.3H4z"/>${marca}</svg>`;
+    ? `<path d="M6.4 5.9l1.1 1.1 2.1-2.3" fill="none" stroke="var(--panel)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>`
+    : `<path d="M6.2 4.6l2.4 2.4m0-2.4-2.4 2.4" fill="none" stroke="var(--panel)" stroke-width="1.4" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 16 16" class="icono-bandera ${ok ? "bandera-ok" : "bandera-fallo"}" aria-hidden="true"><rect x="3.3" y="2" width="1.4" height="12" rx="0.4"/><path d="M4.7 2.4h6.3l-1.7 2.3 1.7 2.3H4.7z"/>${marca}</svg>`;
 }
 
 function bloqueCheckpoint(etapaKey, incidencias) {

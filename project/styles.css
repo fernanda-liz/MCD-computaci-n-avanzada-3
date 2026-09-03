@@ -204,9 +204,9 @@ main {
 }
 
 .icono-ruta {
-  width: 11px;
-  height: 11px;
-  fill: currentColor;
+  width: 13px;
+  height: 13px;
+  fill: var(--accent);
   flex-shrink: 0;
 }
 
