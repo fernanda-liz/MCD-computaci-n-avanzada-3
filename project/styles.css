@@ -159,6 +159,16 @@ main {
   transform: translateY(-2px);
 }
 
+.tarjeta.origen-propio {
+  background: linear-gradient(180deg, rgba(146, 179, 156, 0.07), transparent 40%), var(--panel);
+  border-left: 3px solid var(--propio);
+}
+
+.tarjeta.origen-literatura {
+  background: linear-gradient(180deg, rgba(201, 138, 107, 0.07), transparent 40%), var(--panel);
+  border-left: 3px solid var(--lit);
+}
+
 .tarjeta-top {
   display: flex;
   align-items: baseline;
@@ -185,6 +195,31 @@ main {
 .badge.propio { color: var(--propio); border-color: var(--propio); }
 .badge.literatura { color: var(--lit); border-color: var(--lit); }
 
+.badge-ruta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-dim);
+  border-color: var(--line);
+}
+
+.icono-ruta {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.icono-bandera {
+  width: 15px;
+  height: 15px;
+  vertical-align: -3px;
+  margin-right: 0.25rem;
+}
+
+.bandera-ok { fill: var(--propio); }
+.bandera-fallo { fill: var(--fallida); }
+
 .badges {
   display: flex;
   flex-wrap: wrap;
@@ -200,16 +235,48 @@ main {
 .tarjeta.estado-fallida,
 .tarjeta.estado-incompleta { border-color: rgba(201, 105, 95, 0.4); }
 
+.camino {
+  position: relative;
+  padding-left: 20px;
+}
+
+.camino::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: var(--line);
+}
+
 .etapa {
+  position: relative;
   border-top: 1px solid var(--line);
   padding-top: 0.6rem;
   margin-top: 0.6rem;
 }
 
+.etapa::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 0.6rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--panel);
+}
+
+.etapa.chk-ok::before { border-color: var(--propio); background: var(--propio); }
+.etapa.chk-fallo::before { border-color: var(--fallida); background: var(--panel); }
+
 .etapa-nombre {
   margin: 0 0 0.35rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   color: var(--accent);
 }
 
@@ -663,6 +730,19 @@ input[type="range"] {
   gap: 0.8rem;
   margin-top: 1.2rem;
 }
+
+.prox-aviso {
+  margin: 0.3rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  min-height: 0;
+}
+
+.prox-aviso:empty { margin: 0; }
+
+.prox-buena { color: var(--propio); }
+.prox-mala { color: var(--fallida); }
+.prox-neutra { color: var(--text-dim); }
 
 .form-error {
   color: var(--fallida);

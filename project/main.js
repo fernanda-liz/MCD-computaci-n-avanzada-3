@@ -87,13 +87,27 @@ function bloqueEnsayo(bp) {
   return `<div class="stat-bloque">${filas}</div><p class="stat-nota">barra = valor relativo al máximo observado en todo el dataset para esa propiedad</p>`;
 }
 
+const ICONO_RUTA = {
+  FDM: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><rect x="2" y="3" width="12" height="2.4" rx="0.5"/><rect x="2" y="6.8" width="12" height="2.4" rx="0.5"/><rect x="2" y="10.6" width="12" height="2.4" rx="0.5"/></svg>`,
+  SLA: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><path d="M8 1.5c2.4 3 4.3 5.7 4.3 8a4.3 4.3 0 1 1-8.6 0c0-2.3 1.9-5 4.3-8z"/></svg>`,
+  otro: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><path d="M8 1.5 14.5 8 8 14.5 1.5 8z"/></svg>`
+};
+
+function iconoFlag(ok) {
+  const marca = ok
+    ? `<path d="M6.6 5.8l1 1 1.9-2" fill="none" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>`
+    : `<path d="M6.3 4.6l2 2m0-2-2 2" fill="none" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 16 16" class="icono-bandera ${ok ? "bandera-ok" : "bandera-fallo"}" aria-hidden="true"><path d="M4 2.5v11" stroke-width="1.4"/><path d="M4 2.5h6.5l-1.6 2.3 1.6 2.3H4z"/>${marca}</svg>`;
+}
+
 function bloqueCheckpoint(etapaKey, incidencias) {
   const propias = (incidencias || []).filter(inc => inc.etapa === etapaKey);
-  if (propias.length === 0) {
-    return `<p class="checkpoint checkpoint-ok">✓ checkpoint superado</p>`;
+  const ok = propias.length === 0;
+  if (ok) {
+    return { ok, html: `<p class="checkpoint checkpoint-ok">${iconoFlag(true)} checkpoint superado</p>` };
   }
   const filas = propias.map(inc => `<li><strong>${inc.tipo}</strong> — ${inc.detalle}</li>`).join("");
-  return `<p class="checkpoint checkpoint-fallo">⚠ checkpoint no superado</p><ul class="checkpoint-lista">${filas}</ul>`;
+  return { ok, html: `<p class="checkpoint checkpoint-fallo">${iconoFlag(false)} checkpoint no superado</p><ul class="checkpoint-lista">${filas}</ul>` };
 }
 
 function bloqueFotos(fotos) {
@@ -109,45 +123,50 @@ function renderGaleria() {
     const mp = p.materia_prima;
     const fp = p.fabricacion_pieza;
     const bp = p.banco_pruebas;
+    const c1 = bloqueCheckpoint("materia_prima", p.incidencias);
+    const c2 = bloqueCheckpoint("fabricacion_pieza", p.incidencias);
+    const c3 = bloqueCheckpoint("banco_pruebas", p.incidencias);
     return `
-      <article class="tarjeta estado-${p.estado}">
+      <article class="tarjeta estado-${p.estado} origen-${p.origen}">
         <div class="tarjeta-top">
           <h3>${p.nombre}</h3>
           <div class="badges">
             <span class="badge ${p.origen}">${p.origen === "propio" ? "propia" : "literatura"}</span>
-            <span class="badge">${p.ruta}</span>
+            <span class="badge badge-ruta">${ICONO_RUTA[p.ruta] || ""}${p.ruta}</span>
             <span class="badge estado-badge estado-${p.estado}">${ESTADO_LABEL[p.estado] || p.estado}</span>
           </div>
         </div>
         ${bloqueFotos(p.fotos)}
-        <div class="etapa">
-          <p class="etapa-nombre">MATERIA PRIMA <span class="etapa-io">input → output: suspensión/filamento listo</span></p>
-          ${fila("Matriz", mp.matriz)}
-          ${fila("Filler", mp.filler)}
-          ${fila("Carga", mp.filler_wt, "wt%")}
-          ${fila("Densidad filler", mp.densidad_filler_g_cm3, "g/cm³")}
-          ${fila("Granulometría", mp.granulometria_um, "µm")}
-          ${fila("Tiempo de reposo", mp.tiempo_reposo_min, "min")}
-          ${fila("Proceso", mp.metodo_mezcla)}
-          ${fila("Temperatura", mp.temp_proceso_c, "°C")}
-          ${bloqueCheckpoint("materia_prima", p.incidencias)}
-        </div>
-        <div class="etapa">
-          <p class="etapa-nombre">FABRICACIÓN DE LA PIEZA <span class="etapa-io">input → output: pieza física</span></p>
-          ${fila("Proceso", fp.proceso)}
-          ${fila("Temp. impresión", fp.temp_impresion_c, "°C")}
-          ${fila("Norma probeta", fp.norma_probeta)}
-          ${(fp.parametros_adicionales || []).map(pr => fila(pr.nombre, pr.valor)).join("")}
-          ${fp.resultado_visual ? `<p class="observacion">${fp.resultado_visual}</p>` : ""}
-          ${fp.gcode ? `<p class="observacion">gcode: <code>${fp.gcode}</code></p>` : ""}
-          ${bloqueCheckpoint("fabricacion_pieza", p.incidencias)}
-        </div>
-        <div class="etapa">
-          <p class="etapa-nombre">BANCO DE PRUEBAS <span class="etapa-io">input → output: valores mecánicos</span></p>
-          ${bloqueEnsayo(bp)}
-          ${bp.observacion ? `<p class="observacion">${bp.observacion}</p>` : ""}
-          ${bp.derivacion ? `<p class="observacion"><strong>Derivado:</strong> ${bp.derivacion}</p>` : ""}
-          ${bloqueCheckpoint("banco_pruebas", p.incidencias)}
+        <div class="camino">
+          <div class="etapa ${c1.ok ? "chk-ok" : "chk-fallo"}">
+            <p class="etapa-nombre">MATERIA PRIMA <span class="etapa-io">input → output: suspensión/filamento listo</span></p>
+            ${fila("Matriz", mp.matriz)}
+            ${fila("Filler", mp.filler)}
+            ${fila("Carga", mp.filler_wt, "wt%")}
+            ${fila("Densidad filler", mp.densidad_filler_g_cm3, "g/cm³")}
+            ${fila("Granulometría", mp.granulometria_um, "µm")}
+            ${fila("Tiempo de reposo", mp.tiempo_reposo_min, "min")}
+            ${fila("Proceso", mp.metodo_mezcla)}
+            ${fila("Temperatura", mp.temp_proceso_c, "°C")}
+            ${c1.html}
+          </div>
+          <div class="etapa ${c2.ok ? "chk-ok" : "chk-fallo"}">
+            <p class="etapa-nombre">FABRICACIÓN DE LA PIEZA <span class="etapa-io">input → output: pieza física</span></p>
+            ${fila("Proceso", fp.proceso)}
+            ${fila("Temp. impresión", fp.temp_impresion_c, "°C")}
+            ${fila("Norma probeta", fp.norma_probeta)}
+            ${(fp.parametros_adicionales || []).map(pr => fila(pr.nombre, pr.valor)).join("")}
+            ${fp.resultado_visual ? `<p class="observacion">${fp.resultado_visual}</p>` : ""}
+            ${fp.gcode ? `<p class="observacion">gcode: <code>${fp.gcode}</code></p>` : ""}
+            ${c2.html}
+          </div>
+          <div class="etapa ${c3.ok ? "chk-ok" : "chk-fallo"}">
+            <p class="etapa-nombre">BANCO DE PRUEBAS <span class="etapa-io">input → output: valores mecánicos</span></p>
+            ${bloqueEnsayo(bp)}
+            ${bp.observacion ? `<p class="observacion">${bp.observacion}</p>` : ""}
+            ${bp.derivacion ? `<p class="observacion"><strong>Derivado:</strong> ${bp.derivacion}</p>` : ""}
+            ${c3.html}
+          </div>
         </div>
         <p class="ref">${p.referencia}</p>
       </article>`;
@@ -521,6 +540,55 @@ document.getElementById("f-gcode-input").addEventListener("change", (ev) => {
   gcodeRuta = `gcode/${id}/${file.name}`;
   document.getElementById("gcode-nombre").textContent = `Se sugiere guardar como: ${gcodeRuta}`;
   guardarBorrador();
+});
+
+// ---------- Aviso de memoria: "¿ya probé algo parecido?" ----------
+// Compara el valor que se está escribiendo contra todas las fichas existentes.
+// Umbral absoluto para cantidades tipo conteo (wt%, minutos); relativo (5%) para temperaturas,
+// donde 5 grados no significa lo mismo a 60°C que a 220°C.
+const PROX_CONFIG = {
+  "f-filler-wt": { grupo: "materia_prima", campo: "filler_wt", umbral: 5, relativo: false, unidad: "wt%" },
+  "f-densidad": { grupo: "materia_prima", campo: "densidad_filler_g_cm3", umbral: 0.2, relativo: false, unidad: "g/cm³" },
+  "f-temp-proceso": { grupo: "materia_prima", campo: "temp_proceso_c", umbral: 0.05, relativo: true, unidad: "°C" },
+  "f-temp-impresion": { grupo: "fabricacion_pieza", campo: "temp_impresion_c", umbral: 0.05, relativo: true, unidad: "°C" },
+  "f-reposo": { grupo: "materia_prima", campo: "tiempo_reposo_min", umbral: 5, relativo: false, unidad: "min" }
+};
+
+function verificarProximidad(inputId) {
+  const cfg = PROX_CONFIG[inputId];
+  const avisoEl = document.getElementById("prox-" + inputId);
+  const crudo = document.getElementById(inputId).value;
+  if (crudo === "") { avisoEl.textContent = ""; avisoEl.className = "prox-aviso"; return; }
+  const valor = parseFloat(crudo);
+
+  let masCercana = null;
+  let menorDistancia = Infinity;
+  PROBETAS.forEach(p => {
+    const existente = p[cfg.grupo][cfg.campo];
+    if (existente === null || existente === undefined) return;
+    const distancia = Math.abs(existente - valor);
+    const limite = cfg.relativo ? Math.abs(valor) * cfg.umbral : cfg.umbral;
+    if (distancia <= limite && distancia < menorDistancia) {
+      menorDistancia = distancia;
+      masCercana = p;
+    }
+  });
+
+  if (!masCercana) { avisoEl.textContent = ""; avisoEl.className = "prox-aviso"; return; }
+
+  const resultado = masCercana.estado === "completa" ? "funcionó"
+    : (masCercana.estado === "fallida" || masCercana.estado === "incompleta") ? "no funcionó"
+    : "aún sin resultado";
+  const clase = masCercana.estado === "completa" ? "prox-buena"
+    : (masCercana.estado === "fallida" || masCercana.estado === "incompleta") ? "prox-mala"
+    : "prox-neutra";
+
+  avisoEl.className = "prox-aviso " + clase;
+  avisoEl.textContent = `ya probaste ~${masCercana[cfg.grupo][cfg.campo]} ${cfg.unidad} en ${masCercana.nombre} — ${resultado}`;
+}
+
+Object.keys(PROX_CONFIG).forEach(id => {
+  document.getElementById(id).addEventListener("input", () => verificarProximidad(id));
 });
 
 document.getElementById("f-foto-input").addEventListener("change", (ev) => {

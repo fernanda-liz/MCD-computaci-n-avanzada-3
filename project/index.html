@@ -8,8 +8,8 @@
 </head>
 <body>
   <header class="project-header">
-    <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI · PROYECTO FINAL</p>
-    <p class="autor">Fernanda Liz Cabezas G.</p>
+    <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI · TESIS COMPOSITE REMANENTE LAPISLÁZULI · PROYECTO FINAL</p>
+    <p class="autor">Fernanda Liz Cabezas G. · Valeska López S.</p>
     <h1>Bitácora de probetas</h1>
     <p class="subtitle">
       Sistema para registrar y explorar las probetas del biocompuesto de merma de lapislázuli.
@@ -199,12 +199,12 @@
           <div class="form-fila">
             <label class="campo"><span>Matriz</span><input type="text" id="f-matriz" placeholder="PLA"></label>
             <label class="campo"><span>Filler</span><input type="text" id="f-filler" placeholder="lapislázuli molido"></label>
-            <label class="campo"><span>Carga (wt%) <em>*</em></span><input type="number" id="f-filler-wt" step="0.1" required></label>
+            <label class="campo"><span>Carga (wt%) <em>*</em></span><input type="number" id="f-filler-wt" step="0.1" required><p id="prox-f-filler-wt" class="prox-aviso"></p></label>
           </div>
           <div class="form-fila">
-            <label class="campo"><span>Densidad filler (g/cm³)</span><input type="number" id="f-densidad" step="0.01"></label>
+            <label class="campo"><span>Densidad filler (g/cm³)</span><input type="number" id="f-densidad" step="0.01"><p id="prox-f-densidad" class="prox-aviso"></p></label>
             <label class="campo"><span>Granulometría (µm)</span><input type="number" id="f-granulometria" step="1"></label>
-            <label class="campo"><span>Temperatura de proceso (°C)</span><input type="number" id="f-temp-proceso" step="1"></label>
+            <label class="campo"><span>Temperatura de proceso (°C)</span><input type="number" id="f-temp-proceso" step="1"><p id="prox-f-temp-proceso" class="prox-aviso"></p></label>
           </div>
           <div class="form-fila">
             <label class="campo"><span>Método de mezcla</span><input type="text" id="f-metodo-mezcla" placeholder="extrusora de doble husillo"></label>
@@ -212,13 +212,13 @@
             <label class="campo"><span>Consistencia del filamento</span><input type="text" id="f-consistencia" placeholder="sin grumos / con grumos"></label>
           </div>
           <div class="form-fila">
-            <label class="campo"><span>Tiempo de reposo antes de imprimir (min)</span><input type="number" id="f-reposo" step="1" placeholder="relevante en SLA: sedimentación"></label>
+            <label class="campo"><span>Tiempo de reposo antes de imprimir (min)</span><input type="number" id="f-reposo" step="1" placeholder="relevante en SLA: sedimentación"><p id="prox-f-reposo" class="prox-aviso"></p></label>
           </div>
 
           <h3 class="form-etapa">Fabricación de la pieza</h3>
           <div class="form-fila">
             <label class="campo"><span>Proceso</span><input type="text" id="f-proceso" placeholder="FDM"></label>
-            <label class="campo"><span>Temp. impresión (°C)</span><input type="number" id="f-temp-impresion" step="1"></label>
+            <label class="campo"><span>Temp. impresión (°C)</span><input type="number" id="f-temp-impresion" step="1"><p id="prox-f-temp-impresion" class="prox-aviso"></p></label>
             <label class="campo"><span>Velocidad (mm/s)</span><input type="number" id="f-velocidad" step="1"></label>
           </div>
           <div class="form-fila">
