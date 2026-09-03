@@ -246,6 +246,49 @@ main {
   font-style: italic;
 }
 
+.stat-bloque { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.stat-fila {
+  display: grid;
+  grid-template-columns: 108px 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-etiqueta {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.stat-barra {
+  height: 7px;
+  background: var(--panel-alto);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.stat-relleno {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--propio));
+  border-radius: 999px;
+}
+
+.stat-valor {
+  font-size: 0.75rem;
+  color: var(--text);
+  white-space: nowrap;
+  min-width: 58px;
+  text-align: right;
+}
+
+.stat-nota {
+  margin: 0.4rem 0 0;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
 .observacion {
   margin: 0.5rem 0 0;
   font-size: 0.78rem;

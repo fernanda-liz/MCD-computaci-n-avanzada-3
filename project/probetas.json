@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "0.4",
+    "version": "0.5",
     "actualizado": "2026-09-03",
     "titulo": "Bitácora de probetas · biocompuesto de merma de lapislázuli",
     "nota_datos": "Ninguna ficha contiene valores inventados. Las fichas de origen 'propio' provienen del informe experimental LAZULform Evaluación 3 (Cabezas y López, 2026). Las fichas de origen 'literatura' traen valores publicados; cuando el paper reporta un porcentaje de mejora sobre una línea base en vez del valor absoluto, el número se marca como derivado y se explicita el cálculo en el campo 'derivacion'.",
@@ -15,7 +15,8 @@
     "incidencias": "Cada ficha puede traer un arreglo 'incidencias': problemas registrados en cualquier etapa, con {etapa, tipo, detalle}. 'tipo' es una categoría corta (atasco, grumos, adhesión, warping, granulometría incompatible, tiempo de impresión incorrecto, parámetro de slicer no calibrado, sedimentación, curado incompleto, u otra) para poder filtrar y contar patrones de falla a medida que crece la bitácora. No reemplaza 'observacion': observacion es la lectura general de la probeta, incidencias es el registro estructurado de qué salió mal y dónde.",
     "fotos": "Cada ficha puede traer un arreglo 'fotos' con rutas relativas dentro de project/fotos/<id>/. El artefacto no sube archivos por sí solo (es un sitio estático, sin backend): el formulario 'Nueva ficha' solo previsualiza la imagen en tu navegador y sugiere la ruta; el archivo se copia a mano a la carpeta junto con el resto del commit.",
     "parametros_adicionales": "Cada ficha puede traer un arreglo 'parametros_adicionales' dentro de fabricacion_pieza: pares {nombre, valor} para cualquier parámetro de slicer que no tenga campo fijo propio (ej. altura de capa, exposición por capa en Formlabs, soportes, retracción, temperatura de cama). Existe porque BambuStudio y el slicer de Formlabs exponen decenas de parámetros distintos y no tiene sentido anticipar un campo fijo para cada uno.",
-    "gcode": "Cada ficha puede traer 'gcode': la ruta relativa a un archivo .gcode/.form dentro de project/gcode/<id>/. Igual que con las fotos, el formulario solo sugiere el nombre; el archivo se copia a mano al repo junto con el commit — no hay backend que lo reciba."
+    "gcode": "Cada ficha puede traer 'gcode': la ruta relativa a un archivo .gcode/.form dentro de project/gcode/<id>/. Igual que con las fotos, el formulario solo sugiere el nombre; el archivo se copia a mano al repo junto con el commit — no hay backend que lo reciba.",
+    "nota_anisotropia": "El FDM es anisotrópico: la resistencia depende de la orientación de impresión y el ángulo de raster, no solo del %wt de filler. Las 4 fichas de Khan et al. (SP0/SP5/SP10/SP15) comparten la misma configuración de impresión (Tabla 2 del paper: Flat, raster 0°, 220°C, 0.1mm de capa) — la comparación entre ellas es válida. Comparar contra fichas de OTROS papers (Coppola, Al-Mazrouei) no controla por orientación y debe leerse con esa salvedad. La vía SLA (F/G/H) es, en general, más isotrópica que FDM por no depender de fusión de filamento entre capas, aunque no es perfectamente isotrópica tampoco — esto es una lectura general de la literatura, no un dato verificado para estas fichas específicas."
   },
   "probetas": [
     {
@@ -355,12 +356,41 @@
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
-        "temp_impresion_c": null,
-        "velocidad_mm_s": null,
-        "posicion": null,
+        "temp_impresion_c": 220,
+        "velocidad_mm_s": 45,
+        "posicion": "Flat (raster 0°)",
         "norma_probeta": "ASTM D638 (tracción) / ASTM D790 (flexión)",
         "resultado_visual": null,
-        "parametros_adicionales": [],
+        "parametros_adicionales": [
+          {
+            "nombre": "temperatura de cama",
+            "valor": "60 °C"
+          },
+          {
+            "nombre": "infill",
+            "valor": "100% rectilíneo"
+          },
+          {
+            "nombre": "ángulo de raster",
+            "valor": "0°"
+          },
+          {
+            "nombre": "altura de capa",
+            "valor": "0.1 mm"
+          },
+          {
+            "nombre": "ancho de extrusión",
+            "valor": "0.45 mm"
+          },
+          {
+            "nombre": "velocidad de impresión",
+            "valor": "45 mm/s"
+          },
+          {
+            "nombre": "perímetros (shells)",
+            "valor": "3"
+          }
+        ],
         "gcode": null
       },
       "banco_pruebas": {
@@ -396,12 +426,41 @@
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
-        "temp_impresion_c": null,
-        "velocidad_mm_s": null,
-        "posicion": null,
+        "temp_impresion_c": 220,
+        "velocidad_mm_s": 45,
+        "posicion": "Flat (raster 0°)",
         "norma_probeta": "ASTM D638 / ASTM D790",
         "resultado_visual": null,
-        "parametros_adicionales": [],
+        "parametros_adicionales": [
+          {
+            "nombre": "temperatura de cama",
+            "valor": "60 °C"
+          },
+          {
+            "nombre": "infill",
+            "valor": "100% rectilíneo"
+          },
+          {
+            "nombre": "ángulo de raster",
+            "valor": "0°"
+          },
+          {
+            "nombre": "altura de capa",
+            "valor": "0.1 mm"
+          },
+          {
+            "nombre": "ancho de extrusión",
+            "valor": "0.45 mm"
+          },
+          {
+            "nombre": "velocidad de impresión",
+            "valor": "45 mm/s"
+          },
+          {
+            "nombre": "perímetros (shells)",
+            "valor": "3"
+          }
+        ],
         "gcode": null
       },
       "banco_pruebas": {
@@ -438,12 +497,41 @@
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
-        "temp_impresion_c": null,
-        "velocidad_mm_s": null,
-        "posicion": null,
+        "temp_impresion_c": 220,
+        "velocidad_mm_s": 45,
+        "posicion": "Flat (raster 0°)",
         "norma_probeta": "ASTM D638 / ASTM D790",
         "resultado_visual": null,
-        "parametros_adicionales": [],
+        "parametros_adicionales": [
+          {
+            "nombre": "temperatura de cama",
+            "valor": "60 °C"
+          },
+          {
+            "nombre": "infill",
+            "valor": "100% rectilíneo"
+          },
+          {
+            "nombre": "ángulo de raster",
+            "valor": "0°"
+          },
+          {
+            "nombre": "altura de capa",
+            "valor": "0.1 mm"
+          },
+          {
+            "nombre": "ancho de extrusión",
+            "valor": "0.45 mm"
+          },
+          {
+            "nombre": "velocidad de impresión",
+            "valor": "45 mm/s"
+          },
+          {
+            "nombre": "perímetros (shells)",
+            "valor": "3"
+          }
+        ],
         "gcode": null
       },
       "banco_pruebas": {
@@ -479,12 +567,41 @@
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
-        "temp_impresion_c": null,
-        "velocidad_mm_s": null,
-        "posicion": null,
+        "temp_impresion_c": 220,
+        "velocidad_mm_s": 45,
+        "posicion": "Flat (raster 0°)",
         "norma_probeta": "ASTM D638 / ASTM D790",
         "resultado_visual": null,
-        "parametros_adicionales": [],
+        "parametros_adicionales": [
+          {
+            "nombre": "temperatura de cama",
+            "valor": "60 °C"
+          },
+          {
+            "nombre": "infill",
+            "valor": "100% rectilíneo"
+          },
+          {
+            "nombre": "ángulo de raster",
+            "valor": "0°"
+          },
+          {
+            "nombre": "altura de capa",
+            "valor": "0.1 mm"
+          },
+          {
+            "nombre": "ancho de extrusión",
+            "valor": "0.45 mm"
+          },
+          {
+            "nombre": "velocidad de impresión",
+            "valor": "45 mm/s"
+          },
+          {
+            "nombre": "perímetros (shells)",
+            "valor": "3"
+          }
+        ],
         "gcode": null
       },
       "banco_pruebas": {

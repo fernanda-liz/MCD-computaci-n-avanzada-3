@@ -21,6 +21,7 @@ async function cargarDatos() {
   const respuesta = await fetch("probetas.json");
   const datos = await respuesta.json();
   PROBETAS = datos.probetas;
+  calcularMaxMetricas();
   renderGaleria();
   dibujarPlano();
   dibujarRanking();
@@ -51,16 +52,39 @@ function fila(etiqueta, valor, unidad) {
   return `<div class="dato"><span>${etiqueta}</span><span>${valor}${unidad ? " " + unidad : ""}</span></div>`;
 }
 
+let MAX_METRICAS = {};
+
+function calcularMaxMetricas() {
+  const campos = ["tensil_mpa", "flexural_mpa", "modulo_flexural_gpa", "modulo_almacenamiento_gpa", "compresion_mpa"];
+  MAX_METRICAS = {};
+  campos.forEach(c => {
+    const valores = PROBETAS.map(p => p.banco_pruebas[c]).filter(v => v !== null);
+    MAX_METRICAS[c] = valores.length ? Math.max(...valores) : 0;
+  });
+}
+
+function filaBarra(etiqueta, valor, unidad, campo) {
+  if (valor === null || valor === undefined) return "";
+  const max = MAX_METRICAS[campo] || valor;
+  const pct = max > 0 ? Math.max((valor / max) * 100, 4) : 4;
+  return `
+    <div class="stat-fila">
+      <span class="stat-etiqueta">${etiqueta}</span>
+      <div class="stat-barra"><div class="stat-relleno" style="width:${pct}%"></div></div>
+      <span class="stat-valor">${valor} ${unidad}</span>
+    </div>`;
+}
+
 function bloqueEnsayo(bp) {
   const filas = [
-    fila("Tracción", bp.tensil_mpa, "MPa"),
-    fila("Flexión", bp.flexural_mpa, "MPa"),
-    fila("Módulo flexural", bp.modulo_flexural_gpa, "GPa"),
-    fila("Módulo almacenamiento", bp.modulo_almacenamiento_gpa, "GPa"),
-    fila("Compresión", bp.compresion_mpa, "MPa")
+    filaBarra("Tracción", bp.tensil_mpa, "MPa", "tensil_mpa"),
+    filaBarra("Flexión", bp.flexural_mpa, "MPa", "flexural_mpa"),
+    filaBarra("Módulo flexural", bp.modulo_flexural_gpa, "GPa", "modulo_flexural_gpa"),
+    filaBarra("Módulo almacenamiento", bp.modulo_almacenamiento_gpa, "GPa", "modulo_almacenamiento_gpa"),
+    filaBarra("Compresión", bp.compresion_mpa, "MPa", "compresion_mpa")
   ].join("");
   if (filas === "") return `<p class="sin-dato">Sin ensayo mecánico todavía</p>`;
-  return filas;
+  return `<div class="stat-bloque">${filas}</div><p class="stat-nota">barra = valor relativo al máximo observado en todo el dataset para esa propiedad</p>`;
 }
 
 function bloqueIncidencias(incidencias) {
