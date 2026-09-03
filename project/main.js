@@ -87,12 +87,13 @@ function bloqueEnsayo(bp) {
   return `<div class="stat-bloque">${filas}</div><p class="stat-nota">barra = valor relativo al máximo observado en todo el dataset para esa propiedad</p>`;
 }
 
-function bloqueIncidencias(incidencias) {
-  if (!incidencias || incidencias.length === 0) return "";
-  const filas = incidencias.map(inc =>
-    `<li><strong>${inc.tipo}</strong> (${inc.etapa.replace("_", " ")}) — ${inc.detalle}</li>`
-  ).join("");
-  return `<div class="incidencias"><p class="etapa-nombre">INCIDENCIAS</p><ul>${filas}</ul></div>`;
+function bloqueCheckpoint(etapaKey, incidencias) {
+  const propias = (incidencias || []).filter(inc => inc.etapa === etapaKey);
+  if (propias.length === 0) {
+    return `<p class="checkpoint checkpoint-ok">✓ checkpoint superado</p>`;
+  }
+  const filas = propias.map(inc => `<li><strong>${inc.tipo}</strong> — ${inc.detalle}</li>`).join("");
+  return `<p class="checkpoint checkpoint-fallo">⚠ checkpoint no superado</p><ul class="checkpoint-lista">${filas}</ul>`;
 }
 
 function bloqueFotos(fotos) {
@@ -120,30 +121,34 @@ function renderGaleria() {
         </div>
         ${bloqueFotos(p.fotos)}
         <div class="etapa">
-          <p class="etapa-nombre">MATERIA PRIMA</p>
+          <p class="etapa-nombre">MATERIA PRIMA <span class="etapa-io">input → output: suspensión/filamento listo</span></p>
           ${fila("Matriz", mp.matriz)}
           ${fila("Filler", mp.filler)}
           ${fila("Carga", mp.filler_wt, "wt%")}
           ${fila("Densidad filler", mp.densidad_filler_g_cm3, "g/cm³")}
+          ${fila("Granulometría", mp.granulometria_um, "µm")}
+          ${fila("Tiempo de reposo", mp.tiempo_reposo_min, "min")}
           ${fila("Proceso", mp.metodo_mezcla)}
           ${fila("Temperatura", mp.temp_proceso_c, "°C")}
+          ${bloqueCheckpoint("materia_prima", p.incidencias)}
         </div>
         <div class="etapa">
-          <p class="etapa-nombre">FABRICACIÓN DE LA PIEZA</p>
+          <p class="etapa-nombre">FABRICACIÓN DE LA PIEZA <span class="etapa-io">input → output: pieza física</span></p>
           ${fila("Proceso", fp.proceso)}
           ${fila("Temp. impresión", fp.temp_impresion_c, "°C")}
           ${fila("Norma probeta", fp.norma_probeta)}
           ${(fp.parametros_adicionales || []).map(pr => fila(pr.nombre, pr.valor)).join("")}
           ${fp.resultado_visual ? `<p class="observacion">${fp.resultado_visual}</p>` : ""}
           ${fp.gcode ? `<p class="observacion">gcode: <code>${fp.gcode}</code></p>` : ""}
+          ${bloqueCheckpoint("fabricacion_pieza", p.incidencias)}
         </div>
         <div class="etapa">
-          <p class="etapa-nombre">BANCO DE PRUEBAS</p>
+          <p class="etapa-nombre">BANCO DE PRUEBAS <span class="etapa-io">input → output: valores mecánicos</span></p>
           ${bloqueEnsayo(bp)}
           ${bp.observacion ? `<p class="observacion">${bp.observacion}</p>` : ""}
           ${bp.derivacion ? `<p class="observacion"><strong>Derivado:</strong> ${bp.derivacion}</p>` : ""}
+          ${bloqueCheckpoint("banco_pruebas", p.incidencias)}
         </div>
-        ${bloqueIncidencias(p.incidencias)}
         <p class="ref">${p.referencia}</p>
       </article>`;
   }).join("");
@@ -564,7 +569,8 @@ function construirFicha() {
       metodo_mezcla: textOrNull("f-metodo-mezcla"),
       temp_proceso_c: numOrNull("f-temp-proceso"),
       diametro_filamento_mm: numOrNull("f-diametro"),
-      consistencia_filamento: textOrNull("f-consistencia")
+      consistencia_filamento: textOrNull("f-consistencia"),
+      tiempo_reposo_min: numOrNull("f-reposo")
     },
     fabricacion_pieza: {
       proceso: textOrNull("f-proceso"),
@@ -618,6 +624,7 @@ function cargarBorrador() {
   set("f-densidad", mp.densidad_filler_g_cm3); set("f-granulometria", mp.granulometria_um);
   set("f-metodo-mezcla", mp.metodo_mezcla); set("f-temp-proceso", mp.temp_proceso_c);
   set("f-diametro", mp.diametro_filamento_mm); set("f-consistencia", mp.consistencia_filamento);
+  set("f-reposo", mp.tiempo_reposo_min);
 
   const fp = borrador.fabricacion_pieza || {};
   set("f-proceso", fp.proceso); set("f-temp-impresion", fp.temp_impresion_c);

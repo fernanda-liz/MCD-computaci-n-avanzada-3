@@ -200,22 +200,6 @@ main {
 .tarjeta.estado-fallida,
 .tarjeta.estado-incompleta { border-color: rgba(201, 105, 95, 0.4); }
 
-.incidencias {
-  border-top: 1px solid var(--line);
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-}
-
-.incidencias ul {
-  margin: 0;
-  padding-left: 1.1rem;
-  font-size: 0.78rem;
-  color: var(--fallida);
-  line-height: 1.5;
-}
-
-.incidencias li strong { color: var(--text); font-weight: 500; }
-
 .etapa {
   border-top: 1px solid var(--line);
   padding-top: 0.6rem;
@@ -228,6 +212,34 @@ main {
   letter-spacing: 0.12em;
   color: var(--accent);
 }
+
+.etapa-io {
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: normal;
+  text-transform: none;
+  margin-left: 0.5rem;
+  font-size: 0.68rem;
+}
+
+.checkpoint {
+  margin: 0.6rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.checkpoint-ok { color: var(--propio); }
+.checkpoint-fallo { color: var(--fallida); }
+
+.checkpoint-lista {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.checkpoint-lista strong { color: var(--text); font-weight: 500; }
 
 .dato {
   display: flex;

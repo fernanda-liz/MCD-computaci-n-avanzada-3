@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "0.5",
+    "version": "0.6",
     "actualizado": "2026-09-03",
     "titulo": "Bitácora de probetas · biocompuesto de merma de lapislázuli",
     "nota_datos": "Ninguna ficha contiene valores inventados. Las fichas de origen 'propio' provienen del informe experimental LAZULform Evaluación 3 (Cabezas y López, 2026). Las fichas de origen 'literatura' traen valores publicados; cuando el paper reporta un porcentaje de mejora sobre una línea base en vez del valor absoluto, el número se marca como derivado y se explicita el cálculo en el campo 'derivacion'.",
@@ -16,7 +16,8 @@
     "fotos": "Cada ficha puede traer un arreglo 'fotos' con rutas relativas dentro de project/fotos/<id>/. El artefacto no sube archivos por sí solo (es un sitio estático, sin backend): el formulario 'Nueva ficha' solo previsualiza la imagen en tu navegador y sugiere la ruta; el archivo se copia a mano a la carpeta junto con el resto del commit.",
     "parametros_adicionales": "Cada ficha puede traer un arreglo 'parametros_adicionales' dentro de fabricacion_pieza: pares {nombre, valor} para cualquier parámetro de slicer que no tenga campo fijo propio (ej. altura de capa, exposición por capa en Formlabs, soportes, retracción, temperatura de cama). Existe porque BambuStudio y el slicer de Formlabs exponen decenas de parámetros distintos y no tiene sentido anticipar un campo fijo para cada uno.",
     "gcode": "Cada ficha puede traer 'gcode': la ruta relativa a un archivo .gcode/.form dentro de project/gcode/<id>/. Igual que con las fotos, el formulario solo sugiere el nombre; el archivo se copia a mano al repo junto con el commit — no hay backend que lo reciba.",
-    "nota_anisotropia": "El FDM es anisotrópico: la resistencia depende de la orientación de impresión y el ángulo de raster, no solo del %wt de filler. Las 4 fichas de Khan et al. (SP0/SP5/SP10/SP15) comparten la misma configuración de impresión (Tabla 2 del paper: Flat, raster 0°, 220°C, 0.1mm de capa) — la comparación entre ellas es válida. Comparar contra fichas de OTROS papers (Coppola, Al-Mazrouei) no controla por orientación y debe leerse con esa salvedad. La vía SLA (F/G/H) es, en general, más isotrópica que FDM por no depender de fusión de filamento entre capas, aunque no es perfectamente isotrópica tampoco — esto es una lectura general de la literatura, no un dato verificado para estas fichas específicas."
+    "nota_anisotropia": "El FDM es anisotrópico: la resistencia depende de la orientación de impresión y el ángulo de raster, no solo del %wt de filler. Las 4 fichas de Khan et al. (SP0/SP5/SP10/SP15) comparten la misma configuración de impresión (Tabla 2 del paper: Flat, raster 0°, 220°C, 0.1mm de capa) — la comparación entre ellas es válida. Comparar contra fichas de OTROS papers (Coppola, Al-Mazrouei) no controla por orientación y debe leerse con esa salvedad. La vía SLA (F/G/H) es, en general, más isotrópica que FDM por no depender de fusión de filamento entre capas, aunque no es perfectamente isotrópica tampoco — esto es una lectura general de la literatura, no un dato verificado para estas fichas específicas.",
+    "checkpoints": "Cada una de las tres etapas (materia_prima, fabricacion_pieza, banco_pruebas) es un par input -> output con su propio checkpoint: si el arreglo 'incidencias' tiene una entrada con esa 'etapa', el checkpoint de esa etapa no se supero y se muestra ahi mismo, no solo al final de la ficha. Una ficha puede pasar el checkpoint de materia prima y fallar en fabricacion, o viceversa - por eso el registro es por etapa, no un solo estado global."
   },
   "probetas": [
     {
@@ -36,7 +37,8 @@
         "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
         "temp_proceso_c": 190,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "fusión en molde (sandwichera)",
@@ -83,7 +85,8 @@
         "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
         "temp_proceso_c": 190,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "fusión en molde (sandwichera)",
@@ -124,7 +127,8 @@
         "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
         "temp_proceso_c": 190,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "fusión en molde (sandwichera)",
@@ -176,7 +180,8 @@
         "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
         "temp_proceso_c": null,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "SLA (curado UV 405 nm)",
@@ -223,7 +228,8 @@
         "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
         "temp_proceso_c": null,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "SLA (curado UV 405 nm)",
@@ -264,7 +270,8 @@
         "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
         "temp_proceso_c": null,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "SLA (curado UV 405 nm)",
@@ -305,7 +312,8 @@
         "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
         "temp_proceso_c": null,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "SLA (curado UV 405 nm)",
@@ -352,7 +360,8 @@
         "metodo_mezcla": "extrusora de doble husillo",
         "temp_proceso_c": null,
         "diametro_filamento_mm": 1.75,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
@@ -422,7 +431,8 @@
         "metodo_mezcla": "extrusora de doble husillo",
         "temp_proceso_c": null,
         "diametro_filamento_mm": 1.75,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
@@ -493,7 +503,8 @@
         "metodo_mezcla": "extrusora de doble husillo",
         "temp_proceso_c": null,
         "diametro_filamento_mm": 1.75,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
@@ -563,7 +574,8 @@
         "metodo_mezcla": "extrusora de doble husillo",
         "temp_proceso_c": null,
         "diametro_filamento_mm": 1.75,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
@@ -634,7 +646,8 @@
         "metodo_mezcla": "mezcla y moldeo por inyección",
         "temp_proceso_c": null,
         "diametro_filamento_mm": null,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "moldeo por inyección",
@@ -675,7 +688,8 @@
         "metodo_mezcla": "extrusora de doble husillo → husillo simple",
         "temp_proceso_c": null,
         "diametro_filamento_mm": 1.75,
-        "consistencia_filamento": null
+        "consistencia_filamento": null,
+        "tiempo_reposo_min": null
       },
       "fabricacion_pieza": {
         "proceso": "FDM",
