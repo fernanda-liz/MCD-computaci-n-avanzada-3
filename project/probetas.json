@@ -1,0 +1,586 @@
+{
+  "meta": {
+    "version": "0.4",
+    "actualizado": "2026-09-03",
+    "titulo": "Bitácora de probetas · biocompuesto de merma de lapislázuli",
+    "nota_datos": "Ninguna ficha contiene valores inventados. Las fichas de origen 'propio' provienen del informe experimental LAZULform Evaluación 3 (Cabezas y López, 2026). Las fichas de origen 'literatura' traen valores publicados; cuando el paper reporta un porcentaje de mejora sobre una línea base en vez del valor absoluto, el número se marca como derivado y se explicita el cálculo en el campo 'derivacion'.",
+    "esquema": "Cada ficha tiene tres bloques por etapa del proceso (materia_prima, fabricacion_pieza, banco_pruebas). Un campo ausente o en null significa 'no medido todavía', nunca 'cero'.",
+    "rutas": "El campo 'ruta' distingue la familia de fabricación (FDM, SLA, u otro como moldeo por inyección) porque cada una tiene un factor limitante distinto: SLA lo limita la opacidad del filler frente al curado UV; FDM lo limita la capacidad de encapsulado de la matriz. No se comparan como si fueran el mismo proceso.",
+    "estados": {
+      "completa": "el ensayo mecánico se realizó y tiene al menos un valor válido",
+      "pendiente": "la fabricación fue exitosa; el ensayo mecánico todavía no se hace",
+      "incompleta": "el proceso se detuvo a medio camino en alguna etapa (ej. impresión no terminó, corte de energía, atasco que obligó a abortar)",
+      "fallida": "el intento se completó pero el resultado no es utilizable (ej. encapsulado insuficiente, curado incompleto, pieza no cumple geometría mínima para ensayar)"
+    },
+    "incidencias": "Cada ficha puede traer un arreglo 'incidencias': problemas registrados en cualquier etapa, con {etapa, tipo, detalle}. 'tipo' es una categoría corta (atasco, grumos, adhesión, warping, granulometría incompatible, tiempo de impresión incorrecto, parámetro de slicer no calibrado, sedimentación, curado incompleto, u otra) para poder filtrar y contar patrones de falla a medida que crece la bitácora. No reemplaza 'observacion': observacion es la lectura general de la probeta, incidencias es el registro estructurado de qué salió mal y dónde.",
+    "fotos": "Cada ficha puede traer un arreglo 'fotos' con rutas relativas dentro de project/fotos/<id>/. El artefacto no sube archivos por sí solo (es un sitio estático, sin backend): el formulario 'Nueva ficha' solo previsualiza la imagen en tu navegador y sugiere la ruta; el archivo se copia a mano a la carpeta junto con el resto del commit.",
+    "parametros_adicionales": "Cada ficha puede traer un arreglo 'parametros_adicionales' dentro de fabricacion_pieza: pares {nombre, valor} para cualquier parámetro de slicer que no tenga campo fijo propio (ej. altura de capa, exposición por capa en Formlabs, soportes, retracción, temperatura de cama). Existe porque BambuStudio y el slicer de Formlabs exponen decenas de parámetros distintos y no tiene sentido anticipar un campo fijo para cada uno.",
+    "gcode": "Cada ficha puede traer 'gcode': la ruta relativa a un archivo .gcode/.form dentro de project/gcode/<id>/. Igual que con las fotos, el formulario solo sugiere el nombre; el archivo se copia a mano al repo junto con el commit — no hay backend que lo reciba."
+  },
+  "probetas": [
+    {
+      "id": "PA",
+      "nombre": "PA · cemento 11%",
+      "origen": "propio",
+      "ruta": "FDM",
+      "estado": "pendiente",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "cemento Portland (sustituto por densidad)",
+        "filler_wt": 11,
+        "densidad_filler_g_cm3": 3.15,
+        "granulometria_um": null,
+        "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
+        "temp_proceso_c": 190,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "fusión en molde (sandwichera)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Encapsulado parcial del polvo por la matriz. Evaluación táctil, sin ensayo mecánico."
+      },
+      "incidencias": [
+        {
+          "etapa": "materia_prima",
+          "tipo": "encapsulado parcial",
+          "detalle": "el cemento no quedó completamente recubierto por el PLA fundido"
+        }
+      ],
+      "fotos": []
+    },
+    {
+      "id": "PB",
+      "nombre": "PB · esmalte 11%",
+      "origen": "propio",
+      "ruta": "FDM",
+      "estado": "pendiente",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "esmalte vitrificable (sustituto por densidad e índice de refracción)",
+        "filler_wt": 11,
+        "densidad_filler_g_cm3": 2.45,
+        "granulometria_um": null,
+        "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
+        "temp_proceso_c": 190,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "fusión en molde (sandwichera)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Mejor encapsulado de las tres pruebas FDM. Evaluación táctil, sin ensayo mecánico."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "PC",
+      "nombre": "PC · mixto 27%",
+      "origen": "propio",
+      "ruta": "FDM",
+      "estado": "fallida",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "cemento Portland + esmalte vitrificable",
+        "filler_wt": 27,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "molienda 300 W (20 pulsos × 5 s) → pellets ~3 mm → premezcla en seco",
+        "temp_proceso_c": 190,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "fusión en molde (sandwichera)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Encapsulado insuficiente: exceso de polvo no recubierto. Requeriría agente de acoplamiento silano (1–3%)."
+      },
+      "incidencias": [
+        {
+          "etapa": "materia_prima",
+          "tipo": "encapsulado insuficiente",
+          "detalle": "27 wt% superó la capacidad de la matriz de recubrir el polvo; quedó polvo suelto no encapsulado"
+        },
+        {
+          "etapa": "materia_prima",
+          "tipo": "carga excesiva",
+          "detalle": "muy por encima del rango viable (~7–11 wt%) hallado en las otras dos pruebas de esta misma tanda"
+        }
+      ],
+      "fotos": []
+    },
+    {
+      "id": "F",
+      "nombre": "F · SLA cemento 7%",
+      "origen": "propio",
+      "ruta": "SLA",
+      "estado": "pendiente",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "resina UV fotocurable",
+        "filler": "cemento Portland (sustituto por densidad)",
+        "filler_wt": 7,
+        "densidad_filler_g_cm3": 3.15,
+        "granulometria_um": null,
+        "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "SLA (curado UV 405 nm)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": "curado completo. La más opaca de las tres (F/G/H), con vetas oscuras visibles por mayor sedimentación durante el curado.",
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Curado exitoso a 7 wt%. Sin ensayo mecánico: la ruta SLA en esta fase se evalúa por curado y traslucidez, no por resistencia."
+      },
+      "incidencias": [
+        {
+          "etapa": "materia_prima",
+          "tipo": "sedimentación",
+          "detalle": "vetas oscuras visibles en el disco curado, consistente con mayor densidad y sedimentación del cemento durante el curado"
+        }
+      ],
+      "fotos": []
+    },
+    {
+      "id": "G",
+      "nombre": "G · SLA esmalte 7%",
+      "origen": "propio",
+      "ruta": "SLA",
+      "estado": "pendiente",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "resina UV fotocurable",
+        "filler": "esmalte vitrificable (sustituto por densidad e índice de refracción)",
+        "filler_wt": 7,
+        "densidad_filler_g_cm3": 2.45,
+        "granulometria_um": null,
+        "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "SLA (curado UV 405 nm)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": "curado completo. Azul saturado y uniforme — la más pareja de las tres (F/G/H).",
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Mejor resultado visual de la Fase 2 SLA: curado completo y uniforme a 7 wt%. Sin ensayo mecánico."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "H",
+      "nombre": "H · SLA mixto 7%",
+      "origen": "propio",
+      "ruta": "SLA",
+      "estado": "pendiente",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "resina UV fotocurable",
+        "filler": "cemento Portland + esmalte vitrificable",
+        "filler_wt": 7,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "SLA (curado UV 405 nm)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": "curado completo. La más traslúcida de las tres — coherente con panel retroiluminado.",
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Curado exitoso a 7 wt%, mayor traslucidez del lote. Sin ensayo mecánico."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "SLA-AE",
+      "nombre": "A–E · SLA 20–33% (lote)",
+      "origen": "propio",
+      "ruta": "SLA",
+      "estado": "fallida",
+      "fecha": "2026-06",
+      "referencia": "Cabezas, F. y López S., V. (2026). LAZULform — Evaluación 3. Inteligencia Material, MCD UAI.",
+      "materia_prima": {
+        "matriz": "resina UV fotocurable",
+        "filler": "cemento Portland, esmalte vitrificable y mezclas de ambos (5 pruebas, A–E)",
+        "filler_wt": 26.5,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "premezcla en resina, sin agitación mecánica dedicada",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "SLA (curado UV 405 nm)",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": "cáscara curada / núcleo líquido en las 5 pruebas, independiente del sustituto usado",
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Ficha agregada: representa 5 pruebas individuales (A, B, C, D, E) entre 20 y 33 wt%, todas con el mismo modo de falla. El valor de filler_wt (26,5) es el punto medio del rango, no una medición puntual — se deja explícito aquí en vez de fabricar 5 valores individuales que el informe no reporta por separado."
+      },
+      "incidencias": [
+        {
+          "etapa": "fabricacion_pieza",
+          "tipo": "curado incompleto",
+          "detalle": "la opacidad del filler mineral a 405 nm impidió que la radiación UV penetrara el núcleo de la pieza; la cáscara exterior curó, el interior quedó líquido"
+        }
+      ],
+      "fotos": []
+    },
+    {
+      "id": "SP0",
+      "nombre": "SP0 · PLA puro",
+      "origen": "literatura",
+      "ruta": "FDM",
+      "estado": "completa",
+      "fecha": "2023",
+      "referencia": "Khan, I. et al. (2023). Utilization of waste slate powder in PLA based composite for 3D printer filament. J. Mater. Res. Technol., 24, 703–714.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "sin filler (línea base)",
+        "filler_wt": 0,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "extrusora de doble husillo",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": 1.75,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "FDM",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": "ASTM D638 (tracción) / ASTM D790 (flexión)",
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": 30.4,
+        "flexural_mpa": 84.3,
+        "modulo_flexural_gpa": 3.21,
+        "modulo_almacenamiento_gpa": 1.23,
+        "compresion_mpa": null,
+        "norma": "ASTM D638 / D790 / D6110-10",
+        "observacion": "Línea base del estudio. Tensil reportado como 30,4 ± 0,4 MPa. Módulo de almacenamiento medido por DMA a 40 °C."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "SP5",
+      "nombre": "SP5 · pizarra 5%",
+      "origen": "literatura",
+      "ruta": "FDM",
+      "estado": "completa",
+      "fecha": "2023",
+      "referencia": "Khan, I. et al. (2023). J. Mater. Res. Technol., 24, 703–714.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "polvo de pizarra de desecho",
+        "filler_wt": 5,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "extrusora de doble husillo",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": 1.75,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "FDM",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": "ASTM D638 / ASTM D790",
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": 91.3,
+        "modulo_flexural_gpa": 3.97,
+        "modulo_almacenamiento_gpa": 1.49,
+        "compresion_mpa": null,
+        "norma": "ASTM D638 / D790 / D6110-10",
+        "derivacion": "Flexural y módulo derivados de la línea base SP0 con las mejoras reportadas en el paper: 84,3 × 1,0826 = 91,3 MPa y 3,21 × 1,2367 = 3,97 GPa. El paper reporta el porcentaje, no el valor absoluto.",
+        "observacion": "Carga donde la resistencia a tracción alcanza su máximo antes de decaer."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "SP10",
+      "nombre": "SP10 · pizarra 10%",
+      "origen": "literatura",
+      "ruta": "FDM",
+      "estado": "completa",
+      "fecha": "2023",
+      "referencia": "Khan, I. et al. (2023). J. Mater. Res. Technol., 24, 703–714.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "polvo de pizarra de desecho",
+        "filler_wt": 10,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "extrusora de doble husillo",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": 1.75,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "FDM",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": "ASTM D638 / ASTM D790",
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": 93.25,
+        "modulo_flexural_gpa": 4.15,
+        "modulo_almacenamiento_gpa": 1.63,
+        "compresion_mpa": null,
+        "norma": "ASTM D638 / D790 / D6110-10",
+        "observacion": "Óptimo del estudio: valores absolutos reportados directamente. Los autores concluyen que 10 wt% es suficiente para aplicación FDM."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "SP15",
+      "nombre": "SP15 · pizarra 15%",
+      "origen": "literatura",
+      "ruta": "FDM",
+      "estado": "completa",
+      "fecha": "2023",
+      "referencia": "Khan, I. et al. (2023). J. Mater. Res. Technol., 24, 703–714.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "polvo de pizarra de desecho",
+        "filler_wt": 15,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "extrusora de doble husillo",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": 1.75,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "FDM",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": "ASTM D638 / ASTM D790",
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": 92.8,
+        "modulo_flexural_gpa": 4.11,
+        "modulo_almacenamiento_gpa": 1.67,
+        "compresion_mpa": null,
+        "norma": "ASTM D638 / D790 / D6110-10",
+        "derivacion": "Flexural y módulo derivados de la línea base SP0: 84,3 × 1,1002 = 92,8 MPa y 3,21 × 1,2803 = 4,11 GPa.",
+        "observacion": "Módulo de tracción, dureza e impacto siguen subiendo (+19,03%, +10,67% y +31,63% respecto de SP0), pero la flexión ya cae respecto de SP10."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "VS20",
+      "nombre": "VS20 · piedra volcánica 20%",
+      "origen": "literatura",
+      "ruta": "otro",
+      "estado": "completa",
+      "fecha": "2026",
+      "referencia": "Al-Mazrouei, N. et al. (2026). PLA biocomposite reinforced with volcanic stone micro-powder and palm waste. Green Technologies and Sustainability.",
+      "materia_prima": {
+        "matriz": "PLA",
+        "filler": "micro-polvo de piedra volcánica + 5% residuo de palma",
+        "filler_wt": 20,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "mezcla y moldeo por inyección",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": null,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "moldeo por inyección",
+        "temp_impresion_c": null,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": null,
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": 91.6,
+        "norma": null,
+        "observacion": "Mejor composición del estudio (20% piedra volcánica + 5% palma). Resistencia a compresión más alta del corpus revisado. No es FDM ni SLA: sirve como techo de referencia, no como comparación directa."
+      },
+      "incidencias": [],
+      "fotos": []
+    },
+    {
+      "id": "CL4",
+      "nombre": "CL4 · arcilla 4%",
+      "origen": "literatura",
+      "ruta": "FDM",
+      "estado": "completa",
+      "fecha": "2018",
+      "referencia": "Coppola, B. et al. (2018). 3D printing of PLA/clay nanocomposites: influence of printing temperature. Materials, 11(10), 1947.",
+      "materia_prima": {
+        "matriz": "PLA 4032D",
+        "filler": "arcilla organomodificada (Cloisite 30B, nanométrica)",
+        "filler_wt": 4,
+        "densidad_filler_g_cm3": null,
+        "granulometria_um": null,
+        "metodo_mezcla": "extrusora de doble husillo → husillo simple",
+        "temp_proceso_c": null,
+        "diametro_filamento_mm": 1.75,
+        "consistencia_filamento": null
+      },
+      "fabricacion_pieza": {
+        "proceso": "FDM",
+        "temp_impresion_c": 200,
+        "velocidad_mm_s": null,
+        "posicion": null,
+        "norma_probeta": "probetas dog-bone y prismáticas",
+        "resultado_visual": null,
+        "parametros_adicionales": [],
+        "gcode": null
+      },
+      "banco_pruebas": {
+        "tensil_mpa": null,
+        "flexural_mpa": null,
+        "modulo_flexural_gpa": null,
+        "modulo_almacenamiento_gpa": null,
+        "compresion_mpa": null,
+        "norma": null,
+        "observacion": "Aporta parámetros de proceso, no valores mecánicos absolutos: rango de impresión 185–215 °C para PLA 4032D. El módulo elástico sube con la temperatura de impresión. Filler nanométrico: no comparable 1:1 con polvo mineral micrométrico."
+      },
+      "incidencias": [],
+      "fotos": []
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto Final · Bitácora de probetas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="project-header">
+    <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI · PROYECTO FINAL</p>
+    <p class="autor">Fernanda Liz Cabezas G.</p>
+    <h1>Bitácora de probetas</h1>
+    <p class="subtitle">
+      Sistema para registrar y explorar las probetas del biocompuesto de merma de lapislázuli.
+      Cada probeta atraviesa tres etapas — materia prima, fabricación de la pieza y banco de pruebas —
+      y el sistema registra tanto los resultados como los ensayos que no llegaron a buen término.
+    </p>
+  </header>
+
+  <nav class="vistas" role="tablist">
+    <button class="vista-btn activa" data-vista="galeria" role="tab" aria-selected="true">Galería</button>
+    <button class="vista-btn" data-vista="plano" role="tab" aria-selected="false">Plano</button>
+    <button class="vista-btn" data-vista="vista3d" role="tab" aria-selected="false">3D</button>
+    <button class="vista-btn" data-vista="ranking" role="tab" aria-selected="false">Ranking</button>
+    <button class="vista-btn" data-vista="explorador" role="tab" aria-selected="false">Explorador</button>
+    <button class="vista-btn" data-vista="nueva" role="tab" aria-selected="false">Nueva ficha</button>
+  </nav>
+
+  <main>
+    <section id="vista-galeria" class="vista">
+      <div class="barra-filtros">
+        <div class="grupo-filtro">
+          <span class="label-filtro">Origen</span>
+          <button class="chip activa" data-filtro-origen="todos">Todas</button>
+          <button class="chip" data-filtro-origen="propio">Propias</button>
+          <button class="chip" data-filtro-origen="literatura">Literatura</button>
+        </div>
+        <div class="grupo-filtro">
+          <span class="label-filtro">Estado</span>
+          <button class="chip activa" data-filtro-estado="todos">Todos</button>
+          <button class="chip" data-filtro-estado="completa">Completa</button>
+          <button class="chip" data-filtro-estado="pendiente">Pendiente</button>
+          <button class="chip" data-filtro-estado="incompleta">Incompleta</button>
+          <button class="chip" data-filtro-estado="fallida">Fallida</button>
+        </div>
+        <div class="grupo-filtro">
+          <span class="label-filtro">Ruta</span>
+          <button class="chip activa" data-filtro-ruta="todos">Todas</button>
+          <button class="chip" data-filtro-ruta="FDM">FDM</button>
+          <button class="chip" data-filtro-ruta="SLA">SLA</button>
+          <button class="chip" data-filtro-ruta="otro">Otra</button>
+        </div>
+        <div class="grupo-filtro">
+          <span class="label-filtro">Orden</span>
+          <button class="chip activa" data-orden="filler">% filler</button>
+          <button class="chip" data-orden="flexural">Resistencia</button>
+        </div>
+        <p id="conteo" class="conteo"></p>
+      </div>
+      <div id="galeria" class="galeria"></div>
+    </section>
+
+    <section id="vista-plano" class="vista oculta">
+      <div class="plano-wrap">
+        <svg id="plano" viewBox="0 0 720 460" role="img" aria-label="Plano de resistencia flexural contra carga de filler"></svg>
+        <div class="leyenda">
+          <span><i class="punto lit"></i> Con ensayo (literatura)</span>
+          <span><i class="punto propio"></i> Pendiente de ensayo</span>
+          <span><i class="marca-x"></i> Incompleta / fallida</span>
+        </div>
+      </div>
+      <p class="nota-vista">
+        Las probetas sin ensayo mecánico se ubican en su carga real sobre el eje X, en la banda inferior.
+        Las fallidas o incompletas se marcan con una cruz — no porque falten datos, sino porque ese punto
+        del espacio de diseño ya se sabe que no funciona.
+      </p>
+    </section>
+
+    <section id="vista-vista3d" class="vista oculta">
+      <div class="visor3d-wrap">
+        <div id="visor3d"></div>
+        <div id="tooltip3d" class="tooltip3d oculta"></div>
+        <p class="hint3d">Arrastra para orbitar · rueda para acercar · pasa el cursor sobre un punto</p>
+      </div>
+      <div class="leyenda">
+        <span><i class="punto propio" style="background:var(--propio);border:none"></i> Completa</span>
+        <span><i class="punto propio"></i> Pendiente</span>
+        <span><i class="punto" style="background:var(--fallida)"></i> Fallida / incompleta</span>
+        <span><i class="linea-tallo"></i> Prueba propia (tiene tallo al piso)</span>
+      </div>
+      <p class="nota-vista">
+        <strong>Eje X (izquierda-derecha):</strong> carga de filler, en wt% — los números en el suelo son la escala.
+        <strong>Eje Y (profundidad):</strong> densidad del filler en g/cm³ — la variable que en tu informe LAZULform explica la sedimentación
+        (Ley de Stokes): mientras más denso, más rápido sedimenta. Sin ese dato, la probeta se ubica en el carril "sin dato de densidad".
+        <strong>Eje Z (altura):</strong> resistencia flexural en MPa — mientras más alto flota, más resistente. Sin ensayo mecánico, la probeta
+        queda pegada al piso, marcada "sin ensayo mecánico".
+        <strong>Forma:</strong> esfera = FDM, cubo = SLA. Las probetas con un tallo vertical hasta el piso son las tuyas (propias); las que
+        flotan sin tallo son de la literatura.
+      </p>
+    </section>
+
+    <section id="vista-ranking" class="vista oculta">
+      <div class="plano-wrap">
+        <svg id="ranking" viewBox="0 0 720 300" role="img" aria-label="Ranking de resistencia flexural, de mayor a menor"></svg>
+      </div>
+      <p class="nota-vista">
+        Solo probetas con estado <strong>completa</strong> y resistencia flexural medida — sin eso, no hay barra que dibujar honestamente.
+      </p>
+      <div id="ranking-pendientes" class="ranking-pendientes"></div>
+    </section>
+
+    <section id="vista-explorador" class="vista oculta">
+      <div class="explorador-grid">
+        <div class="controles">
+          <label class="control">
+            <span class="control-label">Carga de filler <strong id="val-filler">11</strong> wt%</span>
+            <input type="range" id="slider-filler" min="0" max="27" step="0.5" value="11">
+          </label>
+          <label class="control">
+            <span class="control-label">Vecinos considerados <strong id="val-k">3</strong></span>
+            <input type="range" id="slider-k" min="2" max="5" step="1" value="3">
+          </label>
+          <div class="grupo-filtro">
+            <span class="label-filtro">Ruta</span>
+            <button class="chip activa" data-explorador-ruta="FDM">FDM</button>
+            <button class="chip" data-explorador-ruta="SLA">SLA</button>
+          </div>
+          <p class="nota-control">
+            La estimación pondera las probetas <strong>completas</strong> de esa ruta por el inverso de su distancia en carga.
+            No es un modelo entrenado: es una regla explícita, legible y verificable.
+          </p>
+        </div>
+        <div class="resultado">
+          <p class="resultado-label">Resistencia flexural esperada</p>
+          <p class="resultado-valor"><span id="estimacion">—</span> <span class="unidad">MPa</span></p>
+          <p id="aviso-rango" class="aviso"></p>
+          <p id="aviso-fallas" class="aviso aviso-falla"></p>
+          <div id="derivacion" class="derivacion"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vista-nueva" class="vista oculta">
+      <div class="form-grid">
+        <form id="form-ficha" class="form-ficha" novalidate>
+          <div class="form-fila">
+            <label class="campo">
+              <span>ID <em>*</em></span>
+              <input type="text" id="f-id" placeholder="ej. LZ01" required>
+            </label>
+            <label class="campo">
+              <span>Nombre corto <em>*</em></span>
+              <input type="text" id="f-nombre" placeholder="ej. LZ01 · lapislázuli 9%" required>
+            </label>
+          </div>
+          <div class="form-fila">
+            <label class="campo">
+              <span>Fecha</span>
+              <input type="text" id="f-fecha" placeholder="2026-09">
+            </label>
+            <label class="campo">
+              <span>Origen</span>
+              <select id="f-origen">
+                <option value="propio" selected>propio</option>
+                <option value="literatura">literatura</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Ruta</span>
+              <select id="f-ruta">
+                <option value="FDM" selected>FDM</option>
+                <option value="SLA">SLA</option>
+                <option value="otro">otro</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Estado <em>*</em></span>
+              <select id="f-estado" required>
+                <option value="pendiente" selected>pendiente</option>
+                <option value="completa">completa</option>
+                <option value="incompleta">incompleta</option>
+                <option value="fallida">fallida</option>
+              </select>
+            </label>
+          </div>
+          <label class="campo campo-ancho">
+            <span>Referencia / cita</span>
+            <input type="text" id="f-referencia" placeholder="Cabezas, F. (2026). Bitácora de laboratorio.">
+          </label>
+
+          <h3 class="form-etapa">Materia prima</h3>
+          <div class="form-fila">
+            <label class="campo"><span>Matriz</span><input type="text" id="f-matriz" placeholder="PLA"></label>
+            <label class="campo"><span>Filler</span><input type="text" id="f-filler" placeholder="lapislázuli molido"></label>
+            <label class="campo"><span>Carga (wt%) <em>*</em></span><input type="number" id="f-filler-wt" step="0.1" required></label>
+          </div>
+          <div class="form-fila">
+            <label class="campo"><span>Densidad filler (g/cm³)</span><input type="number" id="f-densidad" step="0.01"></label>
+            <label class="campo"><span>Granulometría (µm)</span><input type="number" id="f-granulometria" step="1"></label>
+            <label class="campo"><span>Temperatura de proceso (°C)</span><input type="number" id="f-temp-proceso" step="1"></label>
+          </div>
+          <div class="form-fila">
+            <label class="campo"><span>Método de mezcla</span><input type="text" id="f-metodo-mezcla" placeholder="extrusora de doble husillo"></label>
+            <label class="campo"><span>Diámetro filamento (mm)</span><input type="number" id="f-diametro" step="0.01"></label>
+            <label class="campo"><span>Consistencia del filamento</span><input type="text" id="f-consistencia" placeholder="sin grumos / con grumos"></label>
+          </div>
+
+          <h3 class="form-etapa">Fabricación de la pieza</h3>
+          <div class="form-fila">
+            <label class="campo"><span>Proceso</span><input type="text" id="f-proceso" placeholder="FDM"></label>
+            <label class="campo"><span>Temp. impresión (°C)</span><input type="number" id="f-temp-impresion" step="1"></label>
+            <label class="campo"><span>Velocidad (mm/s)</span><input type="number" id="f-velocidad" step="1"></label>
+          </div>
+          <div class="form-fila">
+            <label class="campo"><span>Posición de impresión</span><input type="text" id="f-posicion" placeholder="XY / XZ / ZX"></label>
+            <label class="campo campo-ancho"><span>Norma de la probeta</span><input type="text" id="f-norma-probeta" placeholder="ASTM D638"></label>
+          </div>
+          <label class="campo campo-ancho">
+            <span>Resultado visual (curado, warping, adhesión, traslucidez...)</span>
+            <textarea id="f-resultado-visual" rows="2" placeholder="ej. curado completo, azul uniforme"></textarea>
+          </label>
+
+          <p class="form-etapa-nota-suelta">Parámetros adicionales del slicer (BambuStudio, PreForm/Formlabs, u otro) — agrega los que necesites, no hay lista fija</p>
+          <div id="lista-parametros" class="lista-incidencias"></div>
+          <button type="button" id="btn-agregar-parametro" class="btn-secundario">+ agregar parámetro</button>
+
+          <label class="campo campo-ancho" style="margin-top: 1rem;">
+            <span>Archivo gcode / form <span class="form-etapa-nota">se previsualiza el nombre; el archivo se copia a mano al repo</span></span>
+            <input type="file" id="f-gcode-input" accept=".gcode,.form,.txt">
+          </label>
+          <p id="gcode-nombre" class="nota-control"></p>
+
+          <h3 class="form-etapa">Banco de pruebas</h3>
+          <div class="form-fila">
+            <label class="campo"><span>Tracción (MPa)</span><input type="number" id="f-tensil" step="0.1"></label>
+            <label class="campo"><span>Flexión (MPa)</span><input type="number" id="f-flexural" step="0.1"></label>
+            <label class="campo"><span>Módulo flexural (GPa)</span><input type="number" id="f-modulo-flexural" step="0.01"></label>
+          </div>
+          <div class="form-fila">
+            <label class="campo"><span>Módulo almacenamiento (GPa)</span><input type="number" id="f-modulo-alm" step="0.01"></label>
+            <label class="campo"><span>Compresión (MPa)</span><input type="number" id="f-compresion" step="0.1"></label>
+            <label class="campo"><span>Norma del ensayo</span><input type="text" id="f-norma" placeholder="ASTM D790"></label>
+          </div>
+          <label class="campo campo-ancho">
+            <span>Observación general</span>
+            <textarea id="f-observacion" rows="2" placeholder="Lectura general de la probeta"></textarea>
+          </label>
+
+          <h3 class="form-etapa">Fotos <span class="form-etapa-nota">se previsualizan aquí; el archivo se copia a mano al repo</span></h3>
+          <input type="file" id="f-foto-input" accept="image/*" multiple>
+          <div id="preview-fotos" class="preview-fotos"></div>
+          <div id="lista-fotos" class="lista-incidencias"></div>
+
+          <h3 class="form-etapa">Incidencias <span class="form-etapa-nota">qué salió mal, si algo salió mal</span></h3>
+          <div id="lista-incidencias" class="lista-incidencias"></div>
+          <button type="button" id="btn-agregar-incidencia" class="btn-secundario">+ agregar incidencia</button>
+
+          <div class="form-acciones">
+            <button type="submit" class="btn-primario">Generar ficha JSON</button>
+            <button type="button" id="btn-limpiar" class="btn-secundario">Limpiar formulario</button>
+          </div>
+          <p id="form-error" class="form-error" role="alert"></p>
+        </form>
+
+        <div class="salida-json">
+          <div class="salida-header">
+            <p class="resultado-label">Ficha generada</p>
+            <button type="button" id="btn-copiar" class="btn-secundario" disabled>Copiar</button>
+          </div>
+          <pre id="salida-pre"><code id="salida-codigo">Completa el formulario y presiona "Generar ficha JSON".</code></pre>
+          <p class="nota-control">
+            Pega este bloque dentro del arreglo <code>"probetas"</code> de <code>probetas.json</code>
+            (entre dos fichas existentes, separado por coma) y súbelo con el commit habitual.
+            El formulario guarda tu progreso en este navegador mientras escribes.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <strong>Sobre los datos:</strong> las probetas propias (PA, PB, PC) provienen del informe LAZULform Evaluación 3
+    (Cabezas y López, 2026). Las probetas de literatura traen valores publicados por Khan et al. (2023),
+    Al-Mazrouei et al. (2026) y Coppola et al. (2018). Cuando un paper reporta un porcentaje de mejora en vez
+    del valor absoluto, el número se marca como derivado y se muestra el cálculo. Ningún valor es inventado,
+    y los ensayos que no llegaron a buen término se registran igual que los exitosos.
+  </footer>
+
+  <script src="main.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="vista3d.js"></script>
+</body>
+</html>
