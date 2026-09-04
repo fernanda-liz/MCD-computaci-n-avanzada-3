@@ -198,6 +198,17 @@ em { color: var(--accent-suave); font-style: italic; }
 /* reglas + código */
 .split-codigo { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
 
+/* variante para 4 reglas en 2x2: mismo patrón, cajas más compactas */
+.split-codigo-4 { gap: 1rem 1.4rem; }
+
+.split-codigo-4 .regla-bloque { padding: 0.9rem 1.05rem; }
+.split-codigo-4 .regla-num { margin-bottom: 0.55rem; font-size: clamp(0.82rem, 1.05vw, 0.95rem); }
+.split-codigo-4 .regla-io { margin-bottom: 0.3rem; font-size: clamp(0.72rem, 0.92vw, 0.84rem); }
+.split-codigo-4 .regla-io span { min-width: 52px; }
+.split-codigo-4 .regla-bloque p:not(.regla-io):not(.regla-num) { margin-top: 0.55rem; font-size: clamp(0.74rem, 0.94vw, 0.86rem); }
+.split-codigo-4 pre { margin-top: 0.6rem; padding: 0.6rem 0.75rem; }
+.split-codigo-4 code { font-size: clamp(0.66rem, 0.82vw, 0.76rem); line-height: 1.5; }
+
 .regla-bloque {
   background: var(--panel);
   border: 1px solid var(--line);

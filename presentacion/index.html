@@ -119,32 +119,43 @@
   <!-- 05 · REGLAS -->
   <section class="slide">
     <p class="num-seccion">04 · Reglas principales</p>
-    <div class="notas"><span class="notas-t">0:40</span><p>Explicar solo la regla 1 con calma; la 2 mencionarla. "Ausencia no es cero" es la frase que hay que dejar instalada.</p></div>
-    <h2>Dos decisiones que sostienen todo el sistema</h2>
-    <div class="split-codigo">
+    <div class="notas"><span class="notas-t">1:00</span><p>Regla 1 con calma —es la frase que hay que dejar instalada—. Las otras tres, una frase cada una: no hay tiempo para leer el código en voz alta, que quede ahí como respaldo si preguntan.</p></div>
+    <h2>Cuatro decisiones que sostienen todo el sistema</h2>
+    <div class="split-codigo split-codigo-4">
       <div class="regla-bloque">
-        <p class="regla-num">Regla 1 — ausencia ≠ cero</p>
+        <p class="regla-num">1 — ausencia ≠ cero</p>
         <p class="regla-io"><span>entra</span> <code>flexural_mpa: null</code></p>
         <p class="regla-io"><span>sale</span> banda "sin ensayo", en su carga real</p>
-        <p>Una probeta sin medir no vale cero MPa: <strong>no está medida</strong>.
-        Ponerla en cero sería inventar. El vacío se muestra.</p>
+        <p>Una probeta sin medir no vale cero MPa: <strong>no está medida</strong>. Ponerla en cero sería inventar.</p>
         <pre><code>const sinDato = PROBETAS.filter(
   p =&gt; p.banco_pruebas.flexural_mpa === null
-);
-// su carga SÍ es real → eje X
-// su altura NO → banda aparte</code></pre>
+);</code></pre>
       </div>
       <div class="regla-bloque">
-        <p class="regla-num">Regla 2 — estimación explicable</p>
+        <p class="regla-num">2 — estimación explicable</p>
         <p class="regla-io"><span>entra</span> una carga objetivo (11 wt%)</p>
         <p class="regla-io"><span>sale</span> valor esperado <em>y de dónde salió</em></p>
-        <p>No es un modelo entrenado: pondera por <code>1/distancia²</code> y muestra
-        el aporte de cada probeta. A 11 wt% estima <strong>93,2 MPa</strong> (92% de SP10).</p>
-        <pre><code>const peso = 1 / (v.distancia * v.distancia);
-sumaPonderada += peso * v.valor;
-
-// y avisa si alguien falló cerca:
-fallasCercanas = PROBETAS.filter(...)</code></pre>
+        <p>Pondera por <code>1/distancia²</code>. A 11 wt% estima <strong>93,2 MPa</strong> (92% de SP10).</p>
+        <pre><code>const peso = 1 / (v.distancia ** 2);
+sumaPonderada += peso * v.valor;</code></pre>
+      </div>
+      <div class="regla-bloque">
+        <p class="regla-num">3 — el estado es por etapa</p>
+        <p class="regla-io"><span>entra</span> las incidencias de la probeta</p>
+        <p class="regla-io"><span>sale</span> ✓ o ✗ en cada uno de los 3 checkpoints</p>
+        <p>PC falla en materia prima pero <strong>pasa</strong> fabricación: un estado global perdería eso.</p>
+        <pre><code>propias = incidencias.filter(
+  inc =&gt; inc.etapa === etapaKey
+);
+ok = propias.length === 0;</code></pre>
+      </div>
+      <div class="regla-bloque">
+        <p class="regla-num">4 — el sistema recuerda</p>
+        <p class="regla-io"><span>entra</span> un valor que se está escribiendo</p>
+        <p class="regla-io"><span>sale</span> aviso verde si funcionó, rojo si no</p>
+        <p>Al escribir 25 wt%: <span class="rojo">"ya probaste ~26,5 — no funcionó"</span>.</p>
+        <pre><code>distancia = Math.abs(existente - valor);
+if (distancia &lt;= limite) avisar(p);</code></pre>
       </div>
     </div>
   </section>

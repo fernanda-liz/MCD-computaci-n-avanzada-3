@@ -149,7 +149,11 @@ document.addEventListener("touchend", (ev) => {
 prepararTurnos();
 const desdeHash = parseInt((location.hash || "").replace("#", ""), 10);
 const inicial = Number.isFinite(desdeHash) && desdeHash > 0 ? desdeHash - 1 : 0;
-actual = inicial === 0 ? 0 : inicial;
+actual = Math.max(0, Math.min(inicial, slides.length - 1));
+// la portada trae "activa" fija en el HTML — si se abre directo en otra
+// diapositiva (hash, o al refrescar a mitad de charla), hay que sacarla
+// de encima o queda montada debajo de la que sí corresponde.
+slides.forEach((s) => s.classList.remove("activa"));
 slides[actual].classList.add("activa");
 progreso.style.width = ((actual + 1) / slides.length) * 100 + "%";
 contador.textContent = `${actual + 1} / ${slides.length}`;
