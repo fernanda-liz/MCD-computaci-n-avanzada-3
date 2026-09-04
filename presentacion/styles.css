@@ -218,6 +218,10 @@ em { color: var(--accent-suave); font-style: italic; }
 .d-s { fill: var(--text-dim); font-size: 13px; text-anchor: middle; font-family: inherit; }
 .d-cap { fill: var(--accent); font-size: 12.5px; letter-spacing: 0.14em; text-anchor: middle; font-family: inherit; }
 .d-flecha { stroke: var(--azul); stroke-width: 1.6; }
+/* conector de codo/vuelta (flujo de trabajo): usa pathLength="100" en el propio
+   SVG para que el largo real del trazo no importe — así un mismo dasharray de
+   100 sirve tanto para el codo corto como para el bucle que rodea todo el diagrama. */
+.d-conector { fill: none; stroke: var(--azul); stroke-width: 1.6; }
 
 /* reglas + código */
 .split-codigo { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
@@ -703,9 +707,11 @@ body.con-notas .slide.activa .notas {
 }
 
 .diagrama .d-flecha { stroke-dasharray: 62; stroke-dashoffset: 62; }
+.diagrama .d-conector { stroke-dasharray: 100; stroke-dashoffset: 100; }
 
-.slide.activa .diagrama .d-flecha {
-  animation: dibujar 420ms ease-out both;
+.slide.activa .diagrama .d-flecha,
+.slide.activa .diagrama .d-conector {
+  animation: dibujar 620ms ease-out both;
   animation-delay: calc(760ms + var(--k, 0) * 210ms);
 }
 

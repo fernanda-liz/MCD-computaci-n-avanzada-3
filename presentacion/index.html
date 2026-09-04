@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bitácora de probetas · Presentación</title>
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -123,10 +123,41 @@
     <p class="pie-slide">13 probetas hoy · 3 checkpoints cada una · registra lo que falló igual que lo que funcionó · <strong>cero valores inventados</strong>.</p>
   </section>
 
-  <!-- 05 · REGLAS -->
+  <!-- 05 · FLUJO DE TRABAJO -->
   <section class="slide">
     <div class="lapis-fondo" aria-hidden="true"></div>
-    <p class="num-seccion">04 · Reglas principales</p>
+    <p class="num-seccion">04 · Flujo de trabajo</p>
+    <div class="notas"><span class="notas-t">0:30</span><p>Este es el ciclo real, no solo el de los datos: cada iteración empieza donde la anterior dejó una pregunta abierta.</p></div>
+    <h2>Un ciclo que se repite en cada probeta nueva</h2>
+    <svg class="diagrama" viewBox="0 0 1000 340" role="img" aria-label="Flujo de trabajo: fabricar filamento, imprimir probeta y ensayar; luego escribir ficha, publicar y explorar para decidir, que vuelve a fabricar filamento en la siguiente iteración">
+      <defs>
+        <marker id="flecha2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#6478c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text x="500" y="18" class="d-cap">FABRICAR Y ENSAYAR</text>
+      <g class="d-caja"><rect x="20" y="30" width="279" height="70" rx="6"/><text x="159" y="58" class="d-t">Fabricar filamento</text><text x="159" y="78" class="d-s">mezcla + extrusión</text></g>
+      <g class="d-caja"><rect x="361" y="30" width="279" height="70" rx="6"/><text x="500" y="58" class="d-t">Imprimir probeta</text><text x="500" y="78" class="d-s">FDM, posición, temp.</text></g>
+      <g class="d-caja"><rect x="702" y="30" width="279" height="70" rx="6"/><text x="841" y="58" class="d-t">Ensayar</text><text x="841" y="78" class="d-s">flexión, tracción</text></g>
+      <line x1="299" y1="65" x2="361" y2="65" class="d-flecha" marker-end="url(#flecha2)"/>
+      <line x1="640" y1="65" x2="702" y2="65" class="d-flecha" marker-end="url(#flecha2)"/>
+      <path d="M841,100 L841,145 L160,145 L160,190" class="d-conector" pathLength="100" marker-end="url(#flecha2)"/>
+      <text x="500" y="178" class="d-cap">REGISTRAR Y DECIDIR</text>
+      <g class="d-caja"><rect x="20" y="190" width="279" height="70" rx="6"/><text x="159" y="218" class="d-t">Escribir ficha</text><text x="159" y="238" class="d-s">probetas.json</text></g>
+      <g class="d-caja"><rect x="361" y="190" width="279" height="70" rx="6"/><text x="500" y="218" class="d-t">Publicar</text><text x="500" y="238" class="d-s">commit, push, Pages</text></g>
+      <g class="d-caja d-estado"><rect x="702" y="190" width="279" height="70" rx="6"/><text x="841" y="218" class="d-t">Explorar y decidir</text><text x="841" y="238" class="d-s">galería, plano, IDW</text></g>
+      <line x1="299" y1="225" x2="361" y2="225" class="d-flecha" marker-end="url(#flecha2)"/>
+      <line x1="640" y1="225" x2="702" y2="225" class="d-flecha" marker-end="url(#flecha2)"/>
+      <path d="M841,260 L841,300 L0,300 L0,65 L20,65" class="d-conector" pathLength="100" marker-end="url(#flecha2)"/>
+      <text x="420" y="290" class="d-cap">SIGUIENTE ITERACIÓN</text>
+    </svg>
+    <p class="pie-slide">El diagrama anterior describe los datos; este describe el trabajo. Cada casilla es una tarea real, y el ciclo se repite hasta resolver la pregunta de la tesis.</p>
+  </section>
+
+  <!-- 06 · REGLAS -->
+  <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
+    <p class="num-seccion">05 · Reglas principales</p>
     <div class="notas"><span class="notas-t">1:00</span><p>Regla 1 con calma —es la frase que hay que dejar instalada—. Las otras tres, una frase cada una: no hay tiempo para leer el código en voz alta, que quede ahí como respaldo si preguntan.</p></div>
     <h2>Cuatro decisiones que sostienen todo el sistema</h2>
     <div class="split-codigo split-codigo-4">
@@ -168,10 +199,10 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
     </div>
   </section>
 
-  <!-- 06 · DEMO -->
+  <!-- 07 · DEMO -->
   <section class="slide slide-demo">
     <div class="lapis-fondo" aria-hidden="true"></div>
-    <p class="num-seccion">05 · Demo</p>
+    <p class="num-seccion">06 · Demo</p>
     <div class="notas"><span class="notas-t">1:15</span><p>Los 3 pasos, sin improvisar. Terminar en la alerta roja: es lo más vistoso y resume la idea.</p></div>
     <h2>El artefacto, en vivo</h2>
     <a class="url-demo" href="https://fernanda-liz.github.io/MCD-computaci-n-avanzada-3/project/" target="_blank" rel="noopener">
@@ -192,10 +223,10 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
     </div>
   </section>
 
-  <!-- 07 · EL TALLER INVISIBLE -->
+  <!-- 08 · EL TALLER INVISIBLE -->
   <section class="slide">
     <div class="lapis-fondo" aria-hidden="true"></div>
-    <p class="num-seccion">06 · Cómo se construyó</p>
+    <p class="num-seccion">07 · Cómo se construyó</p>
     <div class="notas"><span class="notas-t">0:40</span><p>Aquí está el corazón de la charla: cuatro columnas, una frase cada una. No leer las tarjetas.</p></div>
     <h2>El taller invisible detrás del artefacto</h2>
     <div class="taller">
@@ -223,10 +254,10 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
     <p class="pie-slide">Los datos de Khan et al. que aparecen en el ranking se extrajeron directamente de la Tabla 2 del PDF y quedaron <strong>citados en la ficha correspondiente</strong>, no reproducidos de memoria.</p>
   </section>
 
-  <!-- 08 · CRITERIO -->
+  <!-- 09 · CRITERIO -->
   <section class="slide">
     <div class="lapis-fondo" aria-hidden="true"></div>
-    <p class="num-seccion">07 · Criterio</p>
+    <p class="num-seccion">08 · Criterio</p>
     <div class="notas"><span class="notas-t">0:30</span><p>El punto fuerte: decir que NO a una herramienta también es criterio. Mencionar ECC como ejemplo concreto.</p></div>
     <h2>Usar IA bien es, sobre todo, saber cuándo no usarla</h2>
     <div class="cols-3">
@@ -247,20 +278,6 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
       </div>
     </div>
     <p class="pie-slide">Cada "no" está registrado en el repositorio y en la wiki de tesis, con su razón. <strong>Las decisiones también son dato.</strong></p>
-  </section>
-
-  <!-- 09 · CIERRE -->
-  <section class="slide cierre">
-    <div class="lapis-fondo" aria-hidden="true"></div>
-    <p class="num-seccion">08 · Lo que cambia</p>
-    <div class="notas"><span class="notas-t">0:15</span><p>Cerrar con la frase del título y agradecer. No leer las tres columnas.</p></div>
-    <h2 class="cierre-frase">El cuello de botella dejó de ser construir.<br>Ahora es decidir y verificar.</h2>
-    <div class="cierre-grid">
-      <div><span class="c-num">→</span><p>Una dupla de diseñadoras publicó un sistema de datos funcionando, versionado y citado, sin equipo de desarrollo.</p></div>
-      <div><span class="c-num">→</span><p>Lo escaso ya no es ejecutar: es tener criterio sobre qué construir y honestidad sobre lo que el dato realmente dice.</p></div>
-      <div><span class="c-num">→</span><p>El flujo queda escrito —CLAUDE.md, skills, wiki— así que se repite: en la tesis, en el trabajo, en el próximo curso.</p></div>
-    </div>
-    <p class="pie-slide centro">Fernanda Liz Cabezas G. · Valeska López S. — MCD UAI 2026</p>
   </section>
 
 </div>
@@ -286,6 +303,6 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
 <!-- el ?v= es a propósito: el navegador cachea main.js/styles.css agresivamente
      sin él, y una edición nueva puede no verse ni con recarga forzada.
      Súbelo (v=2 -> v=3...) cada vez que edites main.js o styles.css. -->
-<script src="main.js?v=3"></script>
+<script src="main.js?v=4"></script>
 </body>
 </html>

@@ -32,7 +32,7 @@ function prepararTurnos() {
     slide.querySelectorAll(".diagrama .d-caja, .diagrama .d-cap").forEach((el, k) => {
       el.style.setProperty("--k", k);
     });
-    slide.querySelectorAll(".diagrama .d-flecha").forEach((el, k) => {
+    slide.querySelectorAll(".diagrama .d-flecha, .diagrama .d-conector").forEach((el, k) => {
       el.style.setProperty("--k", k);
     });
   });
