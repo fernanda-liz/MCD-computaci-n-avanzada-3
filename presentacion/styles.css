@@ -446,3 +446,194 @@ body.con-notas .slide.activa .notas {
   .cols-3, .ref-grid, .split-codigo, .cols-2, .taller, .cierre-grid { grid-template-columns: 1fr; }
   .slide { padding: 4vh 5vw; justify-content: flex-start; overflow-y: auto; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   MOVIMIENTO — transiciones entre diapositivas y entradas por etapas
+   Todo el bloque se desactiva solo si el sistema pide menos movimiento.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --ease-salida: cubic-bezier(0.22, 0.80, 0.28, 1);
+  --dur-slide: 480ms;
+  --dur-item: 620ms;
+  --paso: 78ms;      /* separación entre elementos encadenados */
+}
+
+/* — 1. Transición entre diapositivas —
+   Se abandona display:none (no es animable) por opacidad + desplazamiento.
+   La dirección la marca el deck, así que avanzar y retroceder no se sienten igual. */
+.deck { position: relative; height: 100%; }
+
+.slide {
+  display: flex;                     /* antes: none */
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: opacity, transform;
+  transition: opacity var(--dur-slide) ease,
+              transform var(--dur-slide) var(--ease-salida);
+}
+
+.slide.activa,
+.slide.saliendo { visibility: visible; }
+
+.slide.activa {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  z-index: 2;
+}
+
+.slide.saliendo { opacity: 0; z-index: 1; }
+
+/* reposo: la diapositiva espera desplazada del lado por donde va a entrar */
+.deck[data-dir="adelante"] .slide { transform: translateX(3.2%) scale(0.994); }
+.deck[data-dir="atras"]    .slide { transform: translateX(-3.2%) scale(0.994); }
+/* y la que se va sale por el lado contrario */
+.deck[data-dir="adelante"] .slide.saliendo { transform: translateX(-3.2%) scale(0.994); }
+.deck[data-dir="atras"]    .slide.saliendo { transform: translateX(3.2%) scale(0.994); }
+
+/* — 2. Entrada encadenada de los bloques de cada diapositiva —
+   El índice --i lo asigna main.js, así el HTML no necesita marcas. */
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(15px); filter: blur(4px); }
+  to   { opacity: 1; transform: none;             filter: blur(0); }
+}
+
+.slide > *:not(.lapis-fondo):not(.notas):not(.contenedor-anim) { opacity: 0; }
+
+.slide.activa > *:not(.lapis-fondo):not(.notas):not(.contenedor-anim) {
+  animation: entrar var(--dur-item) var(--ease-salida) both;
+  animation-delay: calc(120ms + var(--i, 0) * var(--paso));
+}
+
+/* los contenedores no se desvanecen: lo hacen sus hijos, uno a uno */
+.contenedor-anim { opacity: 1; }
+
+.slide .anim-item { opacity: 0; }
+
+.slide.activa .anim-item {
+  animation: entrar 560ms var(--ease-salida) both;
+  animation-delay: calc(300ms + var(--i, 0) * var(--paso) + var(--j, 0) * 85ms);
+}
+
+/* — 3. Acentos con firma —
+   Portada: el título se revela con una cortina en vez de aparecer de golpe. */
+@keyframes revelar {
+  from { clip-path: inset(0 100% 0 0); opacity: 0.2; }
+  to   { clip-path: inset(0 0 0 0);    opacity: 1; }
+}
+
+.slide.activa.portada h1,
+.slide.activa.cierre .cierre-frase {
+  animation: revelar 900ms var(--ease-salida) both;
+  animation-delay: 220ms;
+  filter: none;
+}
+
+/* Regla dorada que barre bajo cada título de sección */
+.slide h2 { position: relative; }
+
+.slide h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.45rem;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), rgba(217, 178, 90, 0));
+}
+
+@keyframes barrer { to { width: min(100%, 18ch); } }
+
+.slide.activa h2::after {
+  animation: barrer 780ms var(--ease-salida) both;
+  animation-delay: 380ms;
+}
+
+/* El fondo de lapislázuli respira al entrar y las motas de pirita derivan muy lento.
+   El escalado vive en el pseudo-elemento y .lapis-fondo lo recorta: si se aplicara al
+   contenedor, ese 5% extra se sumaría a la región de desbordamiento de la diapositiva. */
+@keyframes respirar { from { opacity: 0; } to { opacity: 1; } }
+@keyframes acercar  { from { transform: scale(1.06); } to { transform: scale(1); } }
+
+.lapis-fondo { overflow: hidden; }
+
+.slide.activa .lapis-fondo { animation: respirar 1400ms var(--ease-salida) both; }
+
+@keyframes deriva {
+  to { background-position: 15% 28%, 71% 58%, 80% 22%; }
+}
+
+.lapis-fondo::after { animation: deriva 70s linear infinite alternate; }
+
+.slide.activa .lapis-fondo::after {
+  animation: acercar 1400ms var(--ease-salida) both,
+             deriva 70s linear infinite alternate;
+}
+
+/* — 4. El diagrama de arquitectura se construye por etapas —
+   Primero las cajas de cada columna, después las flechas que las conectan. */
+@keyframes entrar-svg {
+  from { opacity: 0; transform: translateY(9px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes dibujar { to { stroke-dashoffset: 0; } }
+
+.diagrama .d-caja,
+.diagrama .d-cap { opacity: 0; }
+
+.slide.activa .diagrama .d-caja,
+.slide.activa .diagrama .d-cap {
+  animation: entrar-svg 520ms var(--ease-salida) both;
+  animation-delay: calc(420ms + var(--k, 0) * 70ms);
+}
+
+.diagrama .d-flecha { stroke-dasharray: 62; stroke-dashoffset: 62; }
+
+.slide.activa .diagrama .d-flecha {
+  animation: dibujar 420ms ease-out both;
+  animation-delay: calc(760ms + var(--k, 0) * 210ms);
+}
+
+/* — 5. Detalles de interfaz — */
+.progreso { transition: width var(--dur-slide) var(--ease-salida); }
+
+.controles button:active { transform: scale(0.9); }
+
+.url-demo { transition: color 0.25s ease, border-color 0.25s ease, letter-spacing 0.35s ease; }
+.url-demo:hover { letter-spacing: 0.01em; }
+
+/* — 6. Respeto por quien prefiere menos movimiento —
+   Se conserva la navegación, se elimina el desplazamiento. */
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .slide.activa,
+  .slide.saliendo,
+  .deck[data-dir="adelante"] .slide,
+  .deck[data-dir="atras"] .slide { transform: none; transition: opacity 140ms linear; }
+
+  .slide.activa > *,
+  .slide.activa .anim-item,
+  .slide.activa .diagrama .d-caja,
+  .slide.activa .diagrama .d-cap,
+  .slide.activa .lapis-fondo,
+  .slide.activa.portada h1,
+  .slide.activa.cierre .cierre-frase { animation: none; opacity: 1; filter: none; transform: none; }
+
+  .slide.activa h2::after { animation: none; width: min(100%, 18ch); }
+  .diagrama .d-flecha { stroke-dashoffset: 0; }
+  .lapis-fondo::after { animation: none; }
+}
+
+/* — 7. Impresión / exportación a PDF: todo visible, sin animación — */
+@media print {
+  .slide { position: static; opacity: 1; visibility: visible; page-break-after: always; transform: none; }
+  .slide > *, .slide .anim-item, .diagrama .d-caja, .diagrama .d-cap { opacity: 1; animation: none; }
+  .diagrama .d-flecha { stroke-dashoffset: 0; }
+  .barra, .controles, .aviso-notas { display: none; }
+}
