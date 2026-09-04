@@ -87,27 +87,24 @@ function bloqueEnsayo(bp) {
   return `<div class="stat-bloque">${filas}</div><p class="stat-nota">barra = valor relativo al máximo observado en todo el dataset para esa propiedad</p>`;
 }
 
-const ICONO_RUTA = {
-  FDM: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><rect x="2" y="3" width="12" height="2.4" rx="0.5"/><rect x="2" y="6.8" width="12" height="2.4" rx="0.5"/><rect x="2" y="10.6" width="12" height="2.4" rx="0.5"/></svg>`,
-  SLA: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><path d="M8 1.5c2.4 3 4.3 5.7 4.3 8a4.3 4.3 0 1 1-8.6 0c0-2.3 1.9-5 4.3-8z"/></svg>`,
-  otro: `<svg viewBox="0 0 16 16" class="icono-ruta" aria-hidden="true"><path d="M8 1.5 14.5 8 8 14.5 1.5 8z"/></svg>`
+const LOGO_RUTA = {
+  FDM: `<svg viewBox="0 0 160.45 151.48" class="logo-ruta" aria-hidden="true"><path d="M115.58,15.6c4.72-.14,8.65.11,13.06.15l29.82.27c1.26.01,2,2.24,2,3.53l-.02,129.2c-.17,1.39-2.78,2.73-3.94,2.72l-12.87-.07c-2.62-.01-4.04-2.14-4.13-4.4l-.25-6.03H21.78c-.84,1.64-1,3.3-.78,5.02.32,2.49-.72,5.36-3.72,5.36l-13.68.03c-2.17,0-3.6-1.94-3.6-4.13V19.18c0-1.86,1.34-3.21,3.04-3.21l75.87-.06,7.55-.4,6.95.19,10.76-.08c1.06,2.44,1.09,4.5.13,6.88l-97.32.02v121.2c2.19,1.01,4.35,1.01,6.62.29.57-3.82-.18-10.01,2.98-10.01h127.68c2.7,1.02,3.22,4.75,2.3,7.07-.41,1.05.47,3.28,1.38,3.26l5.53-.14V22.6s-37.93-.11-37.93-.11c-.65-2.32-.62-4.11.03-6.89Z"/><path d="M125.3,121.67l16.17-.29.03-52.33c-.34-.48-1.47-1.06-2.05-1.06h-43.31s-.01-7.03-.01-7.03h42.82c.58-.01,1.96-.69,2.53-1.09v-17.33c-2.5-3.1-7.17-7.53-10-7.55l-12.07-.09-4-.56c-.42-2.08-.44-4.14.1-6.4l20.74.04c3.88,4.72,10.05,7.27,12.17,11.59v86.32c-.25.87-1.67,2.24-2.59,2.58H15.58c-1.46,0-3.18-1.09-3.18-2.54V38.25s12.52-10.31,12.52-10.31l79.45.02c.7,1.97.68,4.17.27,6.1-.66.33-2.07.88-2.76.88l-73.36.02c-2.12,0-9.39,5.97-9.42,8.54l-.18,15.01c-.01.96,1.03,2.43,2.1,2.43l43.24.02c.24,2.55.24,4.47,0,7.02H20.96c-1.02,0-2,.95-2,2.02l.02,51.46,26.48.15,4.43.07,4.63-.07,40.16.09c3.82,0,7.48.19,11.28.13l7.84-.11,5.61.05,5.88-.1Z"/><path d="M109.83,107.8l-14.41-.06-55.99-.03c-.19.38-.36,1.17-.41,1.86h58.8c2.03.4,3.09,1.5,3.29,3.2.17,1.45-.73,3.67-2.75,3.67l-48.89.04-1.09,3.49-6.13-.06-.57-3.41c-4.77.46-9.52-1.93-10.15-7.22-.38-3.19,2.58-8.24,6.47-8.24h84.42c3.01,0,5.6,3.73,6.3,5.99.89,2.89-.66,5.44-2.28,7.16-1.96,2.09-4.39,2.59-7.41,2.22l-.9,3.49-6.04.04-.52-2.95c-.11-.62-1.89-.65-2.58-.56-2.4.31-4.01-1.06-4.09-3.23-.07-1.95,1.06-3.62,3.72-3.63l12.09-.03c.32,0,1.04-.58.99-.82s-.74-1.02-.97-1.02l-10.91.08Z"/><path d="M84.99,89.07c-1.04,1.39-3.13,2.5-4.78,2.49-5.33-.03-5.94-6.35-9.02-7.66-1.62-.69-3.88-.95-4.71-2.5l-.07-23.47c0-1.78,1.01-3.95,3.03-3.96l10.4-.03.9-3.45,6,.1c.1,1.77.62,3.37,2.15,3.34,1.63-.03,3.38.1,4.26,1.01,1.16,1.21,1.32,2.77,1.31,4.53l-.09,20.39c-.01,2.59-2.93,3.95-5.25,3.71l-4.14,5.51ZM86.98,76.21l-.05-15.22h-13.45s.01,15.25.01,15.25c4.92-.26,8.51-.25,13.48-.02Z"/><path d="M80.85,43.3c3.09-6.32,13.12-4.82,22.04-4.85,1.15,0,3.57-1.39,3.57-2.48l.03-26c0-1.55-1.5-3-2.98-2.99l-10.48.06c-3.34.02-1.25,3.99-2.74,6.79l-6.19.03c-.1-2.47-.4-4.66.1-6.79.96-4.16,5.42-6.64,9.42-6.89,3.5-.22,6.73-.22,10.16-.02,4.89.29,9.58,5.36,9.6,9.96l.08,23.45c.02,5.02-3,10.53-8.59,11.2-9.36,1.13-18.2-1.96-17.73,3.66l-6.66.12c-.06-1.79-.3-3.86.37-5.24Z"/></svg>`,
+  SLA: `<svg viewBox="0 0 163.94 152.34" class="logo-ruta" aria-hidden="true"><path d="M116.77,100.32l.23,12.65c1.39.39,3.09.42,4.88.09l-.19-40.93-.21-37.82-30.87-.02,8.73,13.71c.42.8.79,2.52.43,3.22-.4.78-1.96,2.05-3.06,2.06l-47.51.31-16.06.08c-2.14.01-4.32-3.25-2.94-5l11.11-14.17c-2.26-1.49-5.59,1.12-7.93-1.32-.92-.96-.72-2.49-.77-3.86l-.24-7.56c-.06-1.88.68-4.85,3.15-4.83l21.8.15,64.12.21-.09-11.99c-.01-1.51-.9-3.95,1.14-4.92l22.81-.09c1.47,0,2.93-.76,4.18.27.93.77,1.46,2.29,1.48,3.75l.24,19.27.48,28.58.52,31.48.4,25.1.36,4.14,6.98-.03,3.99,1.17-.04,38.35H.11s-.11-35.49-.11-35.49c.53-1.27,2.71-3.13,3.78-3.58,3.05.45,5.62.58,8.38.27l.11-7.27.22-14.46c.02-1.3,1.03-2.91,2.6-2.91l97.79-.05c.98,0,2.21.23,2.68.62.55.45.94,1.91.96,2.76l.25,8.08ZM146.57,109.91l-.39-29.77-.48-26.61-.5-30.47-.28-16.72-14.9-.12c-.59,0-2.27-.35-2.54.22l.08,68.78.03,4.65.12,18.15.31,15.11,10.96.05,7.36-.45c.58-.26.24-1.94.22-2.82ZM121.47,28.82l-.25-5.95-82.26-.08c-.72,1.74-.65,3.68.1,5.52l71.07.23,11.33.28ZM92.08,47.68l-8.62-13.39-31.89-.08c-1.02,0-2.36-.17-3.02.67l-10.07,12.92,53.61-.12ZM108.94,113.33c.54,0,1.75-.47,1.76-.94v-1.67s.15-15.67.15-15.67l-3.9-.61-15.81.31-72.68.09-.06,18.75,44.55-.09,45.99-.17Z"/></svg>`,
+  otro: `<svg viewBox="0 0 16 16" class="logo-ruta" aria-hidden="true"><path d="M8 1.5 14.5 8 8 14.5 1.5 8z"/></svg>`
 };
 
-function iconoFlag(ok) {
-  const marca = ok
-    ? `<path d="M6.4 5.9l1.1 1.1 2.1-2.3" fill="none" stroke="var(--panel)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>`
-    : `<path d="M6.2 4.6l2.4 2.4m0-2.4-2.4 2.4" fill="none" stroke="var(--panel)" stroke-width="1.4" stroke-linecap="round"/>`;
-  return `<svg viewBox="0 0 16 16" class="icono-bandera ${ok ? "bandera-ok" : "bandera-fallo"}" aria-hidden="true"><rect x="3.3" y="2" width="1.4" height="12" rx="0.4"/><path d="M4.7 2.4h6.3l-1.7 2.3 1.7 2.3H4.7z"/>${marca}</svg>`;
+function iconoCheck(ok) {
+  return `<span class="check-badge ${ok ? "check-ok" : "check-fallo"}" aria-hidden="true">${ok ? "✓" : "✗"}</span>`;
 }
 
 function bloqueCheckpoint(etapaKey, incidencias) {
   const propias = (incidencias || []).filter(inc => inc.etapa === etapaKey);
   const ok = propias.length === 0;
   if (ok) {
-    return { ok, html: `<p class="checkpoint checkpoint-ok">${iconoFlag(true)} checkpoint superado</p>` };
+    return { ok, html: `<p class="checkpoint checkpoint-ok">${iconoCheck(true)} checkpoint superado</p>` };
   }
   const filas = propias.map(inc => `<li><strong>${inc.tipo}</strong> — ${inc.detalle}</li>`).join("");
-  return { ok, html: `<p class="checkpoint checkpoint-fallo">${iconoFlag(false)} checkpoint no superado</p><ul class="checkpoint-lista">${filas}</ul>` };
+  return { ok, html: `<p class="checkpoint checkpoint-fallo">${iconoCheck(false)} checkpoint no superado</p><ul class="checkpoint-lista">${filas}</ul>` };
 }
 
 function bloqueFotos(fotos) {
@@ -129,10 +126,13 @@ function renderGaleria() {
     return `
       <article class="tarjeta estado-${p.estado} origen-${p.origen}">
         <div class="tarjeta-top">
-          <h3>${p.nombre}</h3>
+          <div class="titulo-con-logo">
+            ${LOGO_RUTA[p.ruta] || ""}
+            <h3>${p.nombre}</h3>
+          </div>
           <div class="badges">
             <span class="badge ${p.origen}">${p.origen === "propio" ? "propia" : "literatura"}</span>
-            <span class="badge badge-ruta">${ICONO_RUTA[p.ruta] || ""}${p.ruta}</span>
+            <span class="badge">${p.ruta}</span>
             <span class="badge estado-badge estado-${p.estado}">${ESTADO_LABEL[p.estado] || p.estado}</span>
           </div>
         </div>

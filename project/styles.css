@@ -10,6 +10,7 @@
   --propio: #92b39c;
   --lit: #c98a6b;
   --fallida: #c9695f;
+  --ruta-color: #6478c2;
 }
 
 * { box-sizing: border-box; }
@@ -195,30 +196,35 @@ main {
 .badge.propio { color: var(--propio); border-color: var(--propio); }
 .badge.literatura { color: var(--lit); border-color: var(--lit); }
 
-.badge-ruta {
-  display: inline-flex;
+.titulo-con-logo {
+  display: flex;
   align-items: center;
-  gap: 0.3rem;
-  color: var(--text-dim);
-  border-color: var(--line);
+  gap: 0.6rem;
 }
 
-.icono-ruta {
-  width: 13px;
-  height: 13px;
-  fill: var(--accent);
+.logo-ruta {
+  width: 26px;
+  height: 26px;
+  fill: var(--ruta-color);
   flex-shrink: 0;
 }
 
-.icono-bandera {
-  width: 15px;
-  height: 15px;
+.check-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  margin-right: 0.35rem;
   vertical-align: -3px;
-  margin-right: 0.25rem;
 }
 
-.bandera-ok { fill: var(--propio); }
-.bandera-fallo { fill: var(--fallida); }
+.check-ok { background: var(--propio); color: var(--bg); }
+.check-fallo { background: var(--fallida); color: var(--bg); }
 
 .badges {
   display: flex;
