@@ -637,3 +637,33 @@ body.con-notas .slide.activa .notas {
   .diagrama .d-flecha { stroke-dashoffset: 0; }
   .barra, .controles, .aviso-notas { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   PUNTERO PRESENTADOR — pantalla velada
+   El botón de "pantalla negra" del mando sirve para que la sala te
+   mire a ti y no a la diapositiva. Se cubre todo, notas incluidas.
+   ══════════════════════════════════════════════════════════════ */
+
+body.pantalla-negra::after,
+body.pantalla-blanca::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  animation: velar 180ms ease both;
+}
+
+body.pantalla-negra::after { background: #000; }
+body.pantalla-blanca::after { background: #fff; }
+
+@keyframes velar { from { opacity: 0; } to { opacity: 1; } }
+
+/* la barra y los controles también quedan tapados */
+body.pantalla-negra .barra, body.pantalla-negra .controles, body.pantalla-negra .aviso-notas,
+body.pantalla-blanca .barra, body.pantalla-blanca .controles, body.pantalla-blanca .aviso-notas {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.pantalla-negra::after, body.pantalla-blanca::after { animation: none; }
+}
