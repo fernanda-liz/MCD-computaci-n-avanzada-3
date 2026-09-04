@@ -274,6 +274,37 @@ p code {
 .guion li::marker { color: var(--accent); font-weight: 700; }
 .guion strong { color: var(--text); }
 
+/* siguientes pasos (en la diapositiva de demo) */
+.siguientes {
+  margin-top: 2.2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
+}
+
+.siguientes-cap {
+  margin: 0 0 0.8rem;
+  font-size: clamp(0.72rem, 0.92vw, 0.85rem);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.siguientes-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+}
+
+.siguientes-items span {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--azul);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  color: var(--text-dim);
+}
+
 /* taller */
 .taller { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 
