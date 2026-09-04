@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bitácora de probetas · Presentación</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
@@ -14,6 +14,10 @@
   <section class="slide portada activa">
     <div class="notas"><span class="notas-t">0:10</span><p>Presentarse en una línea. "Vamos a mostrar un artefacto de la tesis — y sobre todo cómo se construyó."</p></div>
     <div class="lapis-fondo" aria-hidden="true"></div>
+    <div class="formato-conmutador" id="formato-conmutador" role="group" aria-label="Formato de proyección">
+      <button type="button" id="btn-formato-169" class="formato-btn formato-activo" aria-pressed="true">16:9</button>
+      <button type="button" id="btn-formato-43" class="formato-btn" aria-pressed="false">4:3</button>
+    </div>
     <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI · PROYECTO FINAL</p>
     <h1>Bitácora de probetas</h1>
     <p class="bajada">Un sistema de apoyo a la decisión experimental de la tesis, desarrollado con inteligencia artificial como herramienta de trabajo.</p>
@@ -25,6 +29,7 @@
 
   <!-- 02 · PREGUNTA -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">01 · Pregunta</p>
     <div class="notas"><span class="notas-t">0:30</span><p>Insistir en que son DOS preguntas. La segunda es la que interesa al curso: qué se puede hacer hoy con IA y método.</p></div>
     <h2>Dos preguntas, no una</h2>
@@ -46,6 +51,7 @@
 
   <!-- 03 · CONTEXTO -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">02 · Contexto y referencias</p>
     <div class="notas"><span class="notas-t">0:30</span><p>Señalar la tarjeta verde: es nuestra, y es la única sin valor mecánico. Ese contraste es el problema.</p></div>
     <h2>La literatura da el rango. El lapislázuli no está en ella.</h2>
@@ -76,6 +82,7 @@
 
   <!-- 04 · PROPUESTA + ARQUITECTURA -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">03 · Propuesta y arquitectura</p>
     <div class="notas"><span class="notas-t">0:40</span><p>Recorrer el diagrama de izquierda a derecha. Recalcar: el repositorio git ES la base de datos, no hay servidor.</p></div>
     <h2>Una bitácora viva: input → reglas → estado → output</h2>
@@ -118,6 +125,7 @@
 
   <!-- 05 · REGLAS -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">04 · Reglas principales</p>
     <div class="notas"><span class="notas-t">1:00</span><p>Regla 1 con calma —es la frase que hay que dejar instalada—. Las otras tres, una frase cada una: no hay tiempo para leer el código en voz alta, que quede ahí como respaldo si preguntan.</p></div>
     <h2>Cuatro decisiones que sostienen todo el sistema</h2>
@@ -162,6 +170,7 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
 
   <!-- 06 · DEMO -->
   <section class="slide slide-demo">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">05 · Demo</p>
     <div class="notas"><span class="notas-t">1:15</span><p>Los 3 pasos, sin improvisar. Terminar en la alerta roja: es lo más vistoso y resume la idea.</p></div>
     <h2>El artefacto, en vivo</h2>
@@ -185,6 +194,7 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
 
   <!-- 07 · EL TALLER INVISIBLE -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">06 · Cómo se construyó</p>
     <div class="notas"><span class="notas-t">0:40</span><p>Aquí está el corazón de la charla: cuatro columnas, una frase cada una. No leer las tarjetas.</p></div>
     <h2>El taller invisible detrás del artefacto</h2>
@@ -215,6 +225,7 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
 
   <!-- 08 · CRITERIO -->
   <section class="slide">
+    <div class="lapis-fondo" aria-hidden="true"></div>
     <p class="num-seccion">07 · Criterio</p>
     <div class="notas"><span class="notas-t">0:30</span><p>El punto fuerte: decir que NO a una herramienta también es criterio. Mencionar ECC como ejemplo concreto.</p></div>
     <h2>Usar IA bien es, sobre todo, saber cuándo no usarla</h2>
@@ -262,6 +273,19 @@ if (distancia &lt;= limite) avisar(p);</code></pre>
   <button id="siguiente" aria-label="Diapositiva siguiente">→</button>
 </div>
 
-<script src="main.js"></script>
+<!-- Vista previa 4:3: el mismo deck cargado en un iframe con viewport fijo
+     1024x768 (XGA, la resolución 4:3 más común en proyectores), escalado
+     para caber en pantalla. No es un CSS transform del deck actual —
+     adentro del iframe los tamaños en vw/vh calculan contra esa resolución
+     real, así que lo que se ve es exactamente lo que mostraría ese proyector. -->
+<div id="simulador-4-3" class="simulador-4-3 oculto">
+  <button type="button" id="btn-cerrar-simulador" class="simulador-cerrar">✕ volver a 16:9</button>
+  <iframe id="iframe-4-3" title="Vista previa en 4:3" src="about:blank"></iframe>
+</div>
+
+<!-- el ?v= es a propósito: el navegador cachea main.js/styles.css agresivamente
+     sin él, y una edición nueva puede no verse ni con recarga forzada.
+     Súbelo (v=2 -> v=3...) cada vez que edites main.js o styles.css. -->
+<script src="main.js?v=3"></script>
 </body>
 </html>

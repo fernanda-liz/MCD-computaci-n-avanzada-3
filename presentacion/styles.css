@@ -43,6 +43,13 @@ html, body {
 
 /* fondo lapislázuli: azul profundo con motas doradas de pirita */
 .lapis-fondo {
+  /* absolute, no fixed: .slide tiene will-change:transform, así que ES el
+     "containing block" de cualquier posición fixed/absolute de sus hijos —
+     ambas terminan idénticas aquí, así que "fixed" no libraba del scroll
+     interno de .slide en pantallas angostas (mismo elemento hace de scroll
+     container Y de containing block). El alto real lo fija main.js
+     (ajustarFondos) igualando esta caja al scrollHeight de la diapositiva,
+     así el patrón cubre todo el contenido y no solo el primer pantallazo. */
   position: absolute;
   inset: 0;
   background:
@@ -73,9 +80,9 @@ html, body {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle, rgba(217,178,90,0.5) 0 1.4px, transparent 1.7px),
-    radial-gradient(circle, rgba(217,178,90,0.3) 0 1px, transparent 1.3px),
-    radial-gradient(circle, rgba(230,200,135,0.38) 0 1.2px, transparent 1.5px);
+    radial-gradient(circle, rgba(245,197,63,0.68) 0 1.5px, transparent 1.8px),
+    radial-gradient(circle, rgba(245,197,63,0.46) 0 1.1px, transparent 1.4px),
+    radial-gradient(circle, rgba(250,213,110,0.55) 0 1.3px, transparent 1.6px);
   background-position: 12% 24%, 68% 62%, 84% 18%;
   background-size: 340px 340px, 250px 250px, 430px 430px;
 }
@@ -431,6 +438,80 @@ body.con-notas .slide.activa .notas {
   z-index: 21;
   pointer-events: none;
 }
+
+/* interruptor de formato de proyección (16:9 / 4:3) — solo en portada */
+.formato-conmutador {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  z-index: 10;
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(16, 21, 42, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.22rem;
+}
+
+.formato-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  padding: 0.34rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.formato-btn:hover { color: var(--text); }
+
+.formato-btn.formato-activo {
+  background: var(--accent);
+  color: var(--accent-oscuro);
+  font-weight: 700;
+}
+
+/* simulador: el deck completo, otra vez, dentro de un iframe a resolución
+   4:3 real, escalado para caber — ver comentario en el HTML */
+.simulador-4-3 {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simulador-4-3.oculto { display: none; }
+
+.simulador-4-3 iframe {
+  width: 1024px;
+  height: 768px;
+  border: none;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(217, 178, 90, 0.25), 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.simulador-cerrar {
+  position: fixed;
+  top: 1.4rem;
+  right: 1.4rem;
+  z-index: 201;
+  background: rgba(16, 21, 42, 0.9);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+@media print { .formato-conmutador, .simulador-4-3, .simulador-cerrar { display: none; } }
 
 /* navegación */
 .barra {
