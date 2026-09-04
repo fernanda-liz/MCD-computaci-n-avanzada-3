@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora de probetas · Presentación</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- 01 · PORTADA -->
+  <section class="slide portada activa">
+    <div class="notas"><span class="notas-t">0:10</span><p>Presentarse en una línea. "Vamos a mostrar un artefacto de la tesis — y sobre todo cómo se construyó."</p></div>
+    <div class="lapis-fondo" aria-hidden="true"></div>
+    <p class="eyebrow">COMPUTACIÓN AVANZADA · MCD UAI · PROYECTO FINAL</p>
+    <h1>Bitácora de probetas</h1>
+    <p class="bajada">Un artefacto para decidir qué ensayar después —<br>y el sistema de trabajo con IA que lo hizo posible.</p>
+    <div class="portada-pie">
+      <p class="autoras">Fernanda Liz Cabezas G. · Valeska López S.</p>
+      <p class="contexto">Tesis: biocompuesto de merma de lapislázuli</p>
+    </div>
+  </section>
+
+  <!-- 02 · PREGUNTA -->
+  <section class="slide">
+    <p class="num-seccion">01 · Pregunta</p>
+    <div class="notas"><span class="notas-t">0:30</span><p>Insistir en que son DOS preguntas. La segunda es la que interesa al curso: qué se puede hacer hoy con IA y método.</p></div>
+    <h2>Dos preguntas, no una</h2>
+    <div class="cols-2 preguntas">
+      <div class="caja">
+        <p class="caja-titulo">La de la tesis</p>
+        <p class="pregunta-grande">¿Qué combinación de carga, matriz y proceso conviene ensayar a continuación?</p>
+        <p>Cada probeta cuesta molienda, impresión y banco de pruebas. El espacio de parámetros es enorme
+        y los ensayos que fallan hoy se pierden en un cuaderno.</p>
+      </div>
+      <div class="caja caja-meta">
+        <p class="caja-titulo">La del curso</p>
+        <p class="pregunta-grande">¿Qué puede hacer hoy una dupla de diseñadoras con IA y un flujo de trabajo ordenado?</p>
+        <p>El artefacto es el caso. Lo que realmente se muestra es <strong>cómo se construyó</strong>:
+        qué herramientas, qué disciplina, qué límites.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · CONTEXTO -->
+  <section class="slide">
+    <p class="num-seccion">02 · Contexto y referencias</p>
+    <div class="notas"><span class="notas-t">0:30</span><p>Señalar la tarjeta verde: es nuestra, y es la única sin valor mecánico. Ese contraste es el problema.</p></div>
+    <h2>La literatura da el rango. El lapislázuli no está en ella.</h2>
+    <div class="ref-grid">
+      <div class="ref propia">
+        <p class="ref-fuente">LAZULform Ev. 3 · propio</p>
+        <p class="ref-dato">7–11 wt%</p>
+        <p class="ref-detalle">Rango viable por dos mecanismos distintos: opacidad UV en SLA, encapsulado en FDM. <strong>Sin ensayo mecánico aún.</strong></p>
+      </div>
+      <div class="ref">
+        <p class="ref-fuente">Khan et al. (2023)</p>
+        <p class="ref-dato">93,25 MPa</p>
+        <p class="ref-detalle">PLA + pizarra. Óptimo flexural a 10 wt%; a 15 wt% ya cae.</p>
+      </div>
+      <div class="ref">
+        <p class="ref-fuente">Al-Mazrouei et al. (2026)</p>
+        <p class="ref-dato">91,6 MPa</p>
+        <p class="ref-detalle">PLA + piedra volcánica, compresión. Techo de referencia.</p>
+      </div>
+      <div class="ref">
+        <p class="ref-fuente">Coppola et al. (2018)</p>
+        <p class="ref-dato">185–215 °C</p>
+        <p class="ref-detalle">La temperatura de impresión cambia el módulo: el proceso pesa tanto como la carga.</p>
+      </div>
+    </div>
+    <p class="pie-slide">Nuestras probetas aún no tienen ensayo mecánico. <strong>Ese hueco es el objeto del sistema.</strong></p>
+  </section>
+
+  <!-- 04 · PROPUESTA + ARQUITECTURA -->
+  <section class="slide">
+    <p class="num-seccion">03 · Propuesta y arquitectura</p>
+    <div class="notas"><span class="notas-t">0:40</span><p>Recorrer el diagrama de izquierda a derecha. Recalcar: el repositorio git ES la base de datos, no hay servidor.</p></div>
+    <h2>Una bitácora viva: input → reglas → estado → output</h2>
+    <svg class="diagrama" viewBox="0 0 1000 260" role="img" aria-label="Arquitectura: tres etapas de entrada, reglas, estado en JSON y seis vistas de salida">
+      <defs>
+        <marker id="flecha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#6478c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text x="115" y="24" class="d-cap">INPUT · 3 ETAPAS</text>
+      <g class="d-caja"><rect x="20" y="38" width="190" height="46" rx="6"/><text x="115" y="60" class="d-t">Materia prima</text><text x="115" y="76" class="d-s">%wt · granulometría · reposo</text></g>
+      <g class="d-caja"><rect x="20" y="94" width="190" height="46" rx="6"/><text x="115" y="116" class="d-t">Fabricación</text><text x="115" y="132" class="d-s">parámetros de impresión</text></g>
+      <g class="d-caja"><rect x="20" y="150" width="190" height="46" rx="6"/><text x="115" y="172" class="d-t">Banco de pruebas</text><text x="115" y="188" class="d-s">tracción · flexión · módulos</text></g>
+      <line x1="218" y1="117" x2="278" y2="117" class="d-flecha" marker-end="url(#flecha)"/>
+      <text x="378" y="24" class="d-cap">REGLAS</text>
+      <g class="d-caja d-reglas"><rect x="285" y="38" width="186" height="158" rx="6"/>
+        <text x="378" y="72" class="d-t">ausencia ≠ cero</text>
+        <text x="378" y="104" class="d-t">checkpoint por etapa</text>
+        <text x="378" y="136" class="d-t">estimación por distancia</text>
+        <text x="378" y="168" class="d-t">alerta de proximidad</text>
+      </g>
+      <line x1="479" y1="117" x2="539" y2="117" class="d-flecha" marker-end="url(#flecha)"/>
+      <text x="636" y="24" class="d-cap">ESTADO</text>
+      <g class="d-caja d-estado"><rect x="546" y="38" width="180" height="158" rx="6"/>
+        <text x="636" y="105" class="d-t">probetas.json</text>
+        <text x="636" y="130" class="d-s">el repositorio git</text>
+        <text x="636" y="148" class="d-s">es la base de datos</text>
+      </g>
+      <line x1="734" y1="117" x2="794" y2="117" class="d-flecha" marker-end="url(#flecha)"/>
+      <text x="893" y="24" class="d-cap">OUTPUT · 6 VISTAS</text>
+      <g class="d-caja d-out"><rect x="801" y="38" width="184" height="26" rx="5"/><text x="893" y="55" class="d-t">Galería</text></g>
+      <g class="d-caja d-out"><rect x="801" y="70" width="184" height="26" rx="5"/><text x="893" y="87" class="d-t">Plano</text></g>
+      <g class="d-caja d-out"><rect x="801" y="102" width="184" height="26" rx="5"/><text x="893" y="119" class="d-t">3D</text></g>
+      <g class="d-caja d-out"><rect x="801" y="134" width="184" height="26" rx="5"/><text x="893" y="151" class="d-t">Ranking</text></g>
+      <g class="d-caja d-out"><rect x="801" y="166" width="184" height="26" rx="5"/><text x="893" y="183" class="d-t">Explorador</text></g>
+      <g class="d-caja d-out"><rect x="801" y="198" width="184" height="26" rx="5"/><text x="893" y="215" class="d-t">Nueva ficha</text></g>
+    </svg>
+    <p class="pie-slide">13 probetas hoy · 3 checkpoints cada una · registra lo que falló igual que lo que funcionó · <strong>cero valores inventados</strong>.</p>
+  </section>
+
+  <!-- 05 · REGLAS -->
+  <section class="slide">
+    <p class="num-seccion">04 · Reglas principales</p>
+    <div class="notas"><span class="notas-t">0:40</span><p>Explicar solo la regla 1 con calma; la 2 mencionarla. "Ausencia no es cero" es la frase que hay que dejar instalada.</p></div>
+    <h2>Dos decisiones que sostienen todo el sistema</h2>
+    <div class="split-codigo">
+      <div class="regla-bloque">
+        <p class="regla-num">Regla 1 — ausencia ≠ cero</p>
+        <p class="regla-io"><span>entra</span> <code>flexural_mpa: null</code></p>
+        <p class="regla-io"><span>sale</span> banda "sin ensayo", en su carga real</p>
+        <p>Una probeta sin medir no vale cero MPa: <strong>no está medida</strong>.
+        Ponerla en cero sería inventar. El vacío se muestra.</p>
+        <pre><code>const sinDato = PROBETAS.filter(
+  p =&gt; p.banco_pruebas.flexural_mpa === null
+);
+// su carga SÍ es real → eje X
+// su altura NO → banda aparte</code></pre>
+      </div>
+      <div class="regla-bloque">
+        <p class="regla-num">Regla 2 — estimación explicable</p>
+        <p class="regla-io"><span>entra</span> una carga objetivo (11 wt%)</p>
+        <p class="regla-io"><span>sale</span> valor esperado <em>y de dónde salió</em></p>
+        <p>No es un modelo entrenado: pondera por <code>1/distancia²</code> y muestra
+        el aporte de cada probeta. A 11 wt% estima <strong>93,2 MPa</strong> (92% de SP10).</p>
+        <pre><code>const peso = 1 / (v.distancia * v.distancia);
+sumaPonderada += peso * v.valor;
+
+// y avisa si alguien falló cerca:
+fallasCercanas = PROBETAS.filter(...)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · DEMO -->
+  <section class="slide slide-demo">
+    <p class="num-seccion">05 · Demo</p>
+    <div class="notas"><span class="notas-t">1:15</span><p>Los 3 pasos, sin improvisar. Terminar en la alerta roja: es lo más vistoso y resume la idea.</p></div>
+    <h2>El artefacto, en vivo</h2>
+    <a class="url-demo" href="https://fernanda-liz.github.io/MCD-computaci-n-avanzada-3/project/" target="_blank" rel="noopener">
+      fernanda-liz.github.io/MCD-computaci-n-avanzada-3/project/
+    </a>
+    <ol class="guion">
+      <li><strong>Plano</strong> — la banda inferior: el hueco que la tesis debe llenar.</li>
+      <li><strong>Explorador</strong> — mover a 11 wt%: 93,2 MPa, y de qué probetas sale.</li>
+      <li><strong>Nueva ficha</strong> — escribir 25 wt%: <span class="rojo">"ya probaste ~26,5 — no funcionó"</span>.</li>
+    </ol>
+  </section>
+
+  <!-- 07 · EL TALLER INVISIBLE -->
+  <section class="slide">
+    <p class="num-seccion">06 · Cómo se construyó</p>
+    <div class="notas"><span class="notas-t">0:40</span><p>Aquí está el corazón de la charla: cuatro columnas, una frase cada una. No leer las tarjetas.</p></div>
+    <h2>El taller invisible detrás del artefacto</h2>
+    <div class="taller">
+      <div class="taller-col">
+        <p class="taller-cap">CAPTURAR</p>
+        <div class="herr"><span class="herr-n">Zotero</span><span class="herr-d">fuente de verdad para citar: metadatos + PDF enlazado</span></div>
+        <div class="herr"><span class="herr-n">raw/ + script propio</span><span class="herr-d">cada PDF → texto por página + imágenes deduplicadas, sin resumir</span></div>
+      </div>
+      <div class="taller-col">
+        <p class="taller-cap">PENSAR</p>
+        <div class="herr"><span class="herr-n">Obsidian</span><span class="herr-d">wiki de tesis: fuentes, conceptos, análisis, bitácora de hitos</span></div>
+        <div class="herr"><span class="herr-n">CLAUDE.md + skills</span><span class="herr-d">el flujo de trabajo escrito como instrucción reutilizable</span></div>
+      </div>
+      <div class="taller-col">
+        <p class="taller-cap">CONSTRUIR</p>
+        <div class="herr"><span class="herr-n">Claude Code</span><span class="herr-d">leer papers, extraer datos citables, escribir y probar el código</span></div>
+        <div class="herr"><span class="herr-n">MCP · navegador</span><span class="herr-d">abrir el sitio, hacer clic, leer errores, corregir y repetir</span></div>
+      </div>
+      <div class="taller-col">
+        <p class="taller-cap">PUBLICAR</p>
+        <div class="herr"><span class="herr-n">git + GitHub Pages</span><span class="herr-d">el repo es la base de datos; el historial, el cuaderno de laboratorio</span></div>
+        <div class="herr"><span class="herr-n">Drive compartido</span><span class="herr-d">respaldo accesible para la dirección de tesis</span></div>
+      </div>
+    </div>
+    <p class="pie-slide">Los datos de Khan et al. que ves en el ranking salieron de leer el PDF y extraer la Tabla 2 — <strong>con la cita puesta en la ficha</strong>, no de memoria.</p>
+  </section>
+
+  <!-- 08 · CRITERIO -->
+  <section class="slide">
+    <p class="num-seccion">07 · Criterio</p>
+    <div class="notas"><span class="notas-t">0:30</span><p>El punto fuerte: decir que NO a una herramienta también es criterio. Mencionar ECC como ejemplo concreto.</p></div>
+    <h2>Usar IA bien es, sobre todo, saber cuándo no usarla</h2>
+    <div class="cols-3">
+      <div class="caja caja-no">
+        <p class="caja-titulo">No inventamos datos</p>
+        <p>Se pidió "inventar valores solo para la demo". La respuesta fue no: se usaron 4 valores reales publicados.
+        Un dato falso sin marcar rompe la garantía de todo el resto.</p>
+      </div>
+      <div class="caja caja-no">
+        <p class="caja-titulo">No instalamos ECC</p>
+        <p>Teníamos disponible un framework con 68 agentes y 286 skills. No se usó:
+        el curso evalúa claridad, no cantidad de tecnología. Habría sumado complejidad sin sumar respuesta.</p>
+      </div>
+      <div class="caja caja-no">
+        <p class="caja-titulo">No dependemos del computador local</p>
+        <p>La idea de conectar cámara y sensores en vivo quedó como siguiente paso:
+        el artefacto tiene que abrir en cualquier navegador, también en incógnito.</p>
+      </div>
+    </div>
+    <p class="pie-slide">Cada "no" está registrado en el repositorio y en la wiki de tesis, con su razón. <strong>Las decisiones también son dato.</strong></p>
+  </section>
+
+  <!-- 09 · CIERRE -->
+  <section class="slide cierre">
+    <div class="lapis-fondo" aria-hidden="true"></div>
+    <p class="num-seccion">08 · Lo que cambia</p>
+    <div class="notas"><span class="notas-t">0:15</span><p>Cerrar con la frase del título y agradecer. No leer las tres columnas.</p></div>
+    <h2 class="cierre-frase">El cuello de botella dejó de ser construir.<br>Ahora es decidir y verificar.</h2>
+    <div class="cierre-grid">
+      <div><span class="c-num">→</span><p>Una dupla de diseñadoras publicó un sistema de datos funcionando, versionado y citado, sin equipo de desarrollo.</p></div>
+      <div><span class="c-num">→</span><p>Lo escaso ya no es ejecutar: es tener criterio sobre qué construir y honestidad sobre qué muestra.</p></div>
+      <div><span class="c-num">→</span><p>El flujo queda escrito —CLAUDE.md, skills, wiki— así que se repite: en la tesis, en el trabajo, en el próximo curso.</p></div>
+    </div>
+    <p class="pie-slide centro">Fernanda Liz Cabezas G. · Valeska López S. — MCD UAI 2026</p>
+  </section>
+
+</div>
+
+<p class="aviso-notas">N · notas y tiempos · ← → navegar</p>
+<div class="barra"><div class="progreso" id="progreso"></div></div>
+<div class="controles">
+  <button id="anterior" aria-label="Diapositiva anterior">←</button>
+  <span id="contador">1 / 9</span>
+  <button id="siguiente" aria-label="Diapositiva siguiente">→</button>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
